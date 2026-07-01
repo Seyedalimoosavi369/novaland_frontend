@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0"/>
+<title>NOVA LAND</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+:root{--bg:#000a00;--bg2:#001500;--g:#00ff41;--g2:#00cc33;--g3:#004400;--text:#ccffcc;--muted:rgba(0,255,65,0.4);--border:rgba(0,255,65,0.2);--card:rgba(0,255,65,0.05);}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Courier New',monospace;min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 50% at 50% -5%,rgba(0,255,65,0.08),transparent 60%);pointer-events:none;z-index:0;}
+#app{position:relative;z-index:1;}
+
+/* MATRIX RAIN */
+#matrix-bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;opacity:0.04;pointer-events:none;}
+
+.header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border);background:rgba(0,10,0,0.95);backdrop-filter:blur(20px);position:sticky;top:0;z-index:100;}
+.logo-main{font-size:18px;font-weight:900;letter-spacing:3px;color:var(--g);text-shadow:0 0 15px var(--g);}
+.logo-sub{font-size:8px;letter-spacing:4px;color:var(--muted);margin-top:-2px;}
+.user-pill{display:flex;align-items:center;gap:7px;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:5px 12px;cursor:pointer;}
+.online-dot{width:7px;height:7px;border-radius:50%;background:var(--g);box-shadow:0 0 8px var(--g);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+.lv{background:rgba(0,255,65,0.15);border:1px solid var(--border);border-radius:6px;padding:1px 6px;font-size:9px;color:var(--g);}
+
+.nav{display:flex;background:rgba(0,10,0,0.98);border-bottom:1px solid var(--border);position:sticky;top:57px;z-index:99;}
+.nav-btn{flex:1;padding:9px 3px;background:none;border:none;border-bottom:2px solid transparent;color:var(--muted);font-size:9px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;font-family:inherit;transition:all .2s;}
+.nav-btn.active{color:var(--g);border-bottom-color:var(--g);text-shadow:0 0 8px var(--g);}
+
+.page{display:none;padding:12px;}
+.page.active{display:block;}
+
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px;}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:10px 6px;text-align:center;position:relative;overflow:hidden;}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--g),transparent);}
+.stat-num{font-size:17px;font-weight:900;color:var(--g);text-shadow:0 0 10px var(--g);}
+.stat-lbl{font-size:9px;color:var(--muted);margin-top:2px;letter-spacing:1px;}
+
+/* AIRDROP */
+.airdrop-bar{background:rgba(0,255,65,0.08);border:1px solid rgba(0,255,65,0.3);border-radius:12px;padding:10px 14px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;}
+.airdrop-btn{background:var(--g);border:none;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:700;color:#000;cursor:pointer;font-family:inherit;}
+
+/* MAP */
+.map-wrap{border:1px solid var(--border);border-radius:14px;overflow:hidden;background:var(--bg);position:relative;}
+.map-overlay{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 50%,transparent 50%,rgba(0,10,0,0.6) 100%);z-index:1;}
+#map-canvas{display:block;width:100%;cursor:crosshair;}
+.map-corner{position:absolute;z-index:2;pointer-events:none;}
+
+.hover-bar{margin:6px 0 0;padding:8px 12px;background:var(--card);border:1px solid var(--border);border-radius:10px;display:flex;justify-content:space-between;align-items:center;font-size:10px;}
+
+.legend{display:flex;flex-wrap:wrap;gap:8px;padding:8px 0;font-size:9px;color:var(--muted);}
+.leg-item{display:flex;align-items:center;gap:4px;}
+.leg-dot{width:9px;height:9px;border-radius:2px;}
+
+/* MODAL */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:200;display:flex;align-items:flex-end;backdrop-filter:blur(12px);}
+.modal{width:100%;background:linear-gradient(180deg,#001800,var(--bg));border-top:1px solid var(--g);border-radius:24px 24px 0 0;padding:18px 16px 36px;max-height:92vh;overflow-y:auto;box-shadow:0 -10px 40px rgba(0,255,65,0.1);}
+.modal-handle{width:34px;height:3px;background:var(--g);border-radius:2px;margin:0 auto 16px;box-shadow:0 0 8px var(--g);}
+.modal-tabs{display:flex;gap:6px;margin-bottom:14px;background:rgba(0,255,65,0.05);border-radius:10px;padding:3px;}
+.mtab{flex:1;padding:8px 4px;background:transparent;border:none;border-radius:8px;color:var(--muted);font-size:10px;cursor:pointer;font-family:inherit;}
+.mtab.active{background:rgba(0,255,65,0.15);color:var(--g);box-shadow:0 0 8px rgba(0,255,65,0.2);}
+
+.land-head{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.land-icon{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;border:1px solid var(--border);background:rgba(0,255,65,0.05);}
+.land-coords{font-size:10px;color:var(--g);letter-spacing:2px;text-shadow:0 0 8px var(--g);}
+.land-title{font-size:17px;font-weight:700;margin:2px 0;color:var(--text);}
+
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
+.ibox{background:rgba(0,255,65,0.05);border:1px solid var(--border);border-radius:10px;padding:10px;}
+.ilbl{font-size:9px;color:var(--muted);margin-bottom:3px;letter-spacing:1px;}
+.ival{font-size:13px;font-weight:700;color:var(--text);}
+
+.btn-p{width:100%;padding:14px;background:var(--g);border:none;border-radius:14px;color:#000;font-size:15px;font-weight:700;cursor:pointer;margin-bottom:8px;font-family:inherit;box-shadow:0 0 20px rgba(0,255,65,0.4);}
+.btn-s{width:100%;padding:12px;background:var(--card);border:1px solid var(--border);border-radius:12px;color:var(--g);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:8px;font-family:inherit;}
+.btn-close{width:100%;background:none;border:none;color:var(--muted);font-size:11px;cursor:pointer;font-family:inherit;}
+
+.section-title{font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;}
+.input-f{width:100%;background:rgba(0,255,65,0.05);border:1px solid var(--border);border-radius:10px;padding:11px 13px;color:var(--text);font-family:inherit;font-size:13px;outline:none;margin-bottom:8px;}
+.input-f:focus{border-color:var(--g);box-shadow:0 0 8px rgba(0,255,65,0.2);}
+
+.build-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px;}
+.build-btn{padding:10px 4px;background:var(--card);border:1px solid var(--border);border-radius:10px;cursor:pointer;text-align:center;transition:all .2s;}
+.build-btn.sel{background:rgba(0,255,65,0.15);border-color:var(--g);box-shadow:0 0 8px rgba(0,255,65,0.2);}
+.build-btn div:first-child{font-size:20px;margin-bottom:3px;}
+.build-btn div:last-child{font-size:8px;color:var(--muted);}
+
+.eff-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px;}
+.eff-btn{padding:8px 4px;background:var(--card);border:1px solid var(--border);border-radius:8px;cursor:pointer;text-align:center;font-size:10px;transition:all .2s;}
+.eff-btn.sel{background:rgba(0,255,65,0.15);border-color:var(--g);}
+.act-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+.act-btn{padding:11px 6px;background:var(--card);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;text-align:center;}
+
+/* PROFILE */
+.profile-hero{background:linear-gradient(135deg,rgba(0,255,65,0.1),rgba(0,100,20,0.05));border:1px solid var(--border);border-radius:20px;padding:20px 18px;text-align:center;margin-bottom:12px;position:relative;overflow:hidden;}
+.profile-hero::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--g),transparent);}
+.big-av{width:68px;height:68px;border-radius:50%;background:linear-gradient(135deg,#003300,#00aa22);display:flex;align-items:center;justify-content:center;font-size:30px;margin:0 auto 10px;box-shadow:0 0 30px rgba(0,255,65,0.4),0 0 60px rgba(0,255,65,0.1);}
+.xp-bar{height:3px;background:rgba(0,255,65,0.15);border-radius:2px;margin:10px 0 4px;overflow:hidden;}
+.xp-fill{height:100%;background:var(--g);border-radius:2px;box-shadow:0 0 6px var(--g);}
+
+.land-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+.land-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px 10px;cursor:pointer;position:relative;overflow:hidden;transition:all .2s;}
+.land-card:active{border-color:var(--g);}
+.land-card-top{position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--g),transparent);}
+.land-img{width:100%;height:60px;object-fit:cover;border-radius:8px;margin-bottom:6px;border:1px solid var(--border);}
+
+/* LB */
+.lb-tabs{display:flex;gap:6px;margin-bottom:12px;}
+.lb-tab{flex:1;padding:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;font-size:10px;cursor:pointer;text-align:center;color:var(--muted);font-family:inherit;}
+.lb-tab.active{background:rgba(0,255,65,0.15);border-color:var(--g);color:var(--g);}
+.lb-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(0,255,65,0.06);}
+.lb-rank{width:28px;text-align:center;font-size:14px;}
+.lb-score{font-size:13px;font-weight:700;color:var(--g);text-shadow:0 0 6px var(--g);}
+
+/* MARKET */
+.mkt-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px;margin-bottom:10px;display:flex;align-items:center;gap:12px;cursor:pointer;}
+.mkt-icon{width:46px;height:46px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;background:rgba(0,255,65,0.08);border:1px solid var(--border);}
+
+/* ADMIN */
+.adm-card{background:rgba(0,255,65,0.05);border:1px solid rgba(0,255,65,0.2);border-radius:14px;padding:14px;margin-bottom:10px;}
+
+/* TOAST */
+.toast{position:fixed;top:68px;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:16px;font-size:12px;font-weight:700;z-index:300;white-space:nowrap;backdrop-filter:blur(10px);display:none;pointer-events:none;font-family:inherit;}
+.toast.show{display:block;animation:fadeIO 2.5s ease forwards;}
+.toast.ok{background:rgba(0,255,65,0.15);border:1px solid var(--g);color:var(--g);box-shadow:0 0 15px rgba(0,255,65,0.2);}
+.toast.err{background:rgba(255,50,50,0.15);border:1px solid #ff3333;color:#ff5555;}
+.toast.info{background:rgba(0,255,65,0.1);border:1px solid var(--muted);color:var(--muted);}
+@keyframes fadeIO{0%{opacity:0;transform:translateX(-50%) translateY(-8px)}15%{opacity:1;transform:translateX(-50%) translateY(0)}75%{opacity:1}100%{opacity:0}}
+</style>
+</head>
+<body>
+<canvas id="matrix-bg"></canvas>
+<div class="toast" id="toast"></div>
+<div id="app">
+<div class="header">
+  <div>
+    <div class="logo-main">◈ NOVA LAND</div>
+    <div class="logo-sub">METAVERSE · TON</div>
+  </div>
+  <div class="user-pill" onclick="showPage('profile')">
+    <div class="online-dot"></div>
+    <span id="uname" style="font-size:12px;color:var(--g)">لود...</span>
+    <div class="lv" id="ulv">Lv1</div>
+  </div>
+</div>
+<div class="nav">
+  <button class="nav-btn active" onclick="showPage('map',this)"><span style="font-size:15px">🗺</span>نقشه</button>
+  <button class="nav-btn" onclick="showPage('market',this)"><span style="font-size:15px">🏛</span>بازار</button>
+  <button class="nav-btn" onclick="showPage('lb',this)"><span style="font-size:15px">🏆</span>رتبه</button>
+  <button class="nav-btn" onclick="showPage('profile',this)"><span style="font-size:15px">👤</span>من</button>
+  <button class="nav-btn" onclick="showPage('ref',this)"><span style="font-size:15px">🎯</span>دعوت</button>
+  <button class="nav-btn" id="adm-nav" style="display:none" onclick="showPage('admin',this)"><span style="font-size:15px">👑</span>ادمین</button>
+</div>
+
+<!-- MAP -->
+<div class="page active" id="page-map">
+  <div id="airdrop-bar" class="airdrop-bar" style="display:none">
+    <div>
+      <div style="font-size:13px;font-weight:700;color:var(--g)">🎁 ایردراپ فعاله!</div>
+      <div style="font-size:10px;color:var(--muted)" id="air-rem">لود...</div>
+    </div>
+    <button class="airdrop-btn" onclick="doAirdrop()">دریافت رایگان!</button>
+  </div>
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-num" id="s-sold">...</div><div class="stat-lbl">فروخته</div></div>
+    <div class="stat-card"><div class="stat-num" id="s-avail">...</div><div class="stat-lbl">موجود</div></div>
+    <div class="stat-card"><div class="stat-num" id="s-vol" style="color:#ffcc00;text-shadow:0 0 10px #ffcc00">...</div><div class="stat-lbl">TON حجم</div></div>
+  </div>
+  <div class="map-wrap">
+    <div class="map-overlay"></div>
+    <svg style="position:absolute;top:6px;left:6px;z-index:2;pointer-events:none" width="12" height="12"><path d="M0,10 L0,0 L10,0" stroke="rgba(0,255,65,0.5)" stroke-width="1.5" fill="none"/></svg>
+    <svg style="position:absolute;top:6px;right:6px;z-index:2;pointer-events:none" width="12" height="12"><path d="M2,0 L12,0 L12,10" stroke="rgba(0,255,65,0.5)" stroke-width="1.5" fill="none"/></svg>
+    <svg style="position:absolute;bottom:6px;left:6px;z-index:2;pointer-events:none" width="12" height="12"><path d="M0,2 L0,12 L10,12" stroke="rgba(0,255,65,0.5)" stroke-width="1.5" fill="none"/></svg>
+    <svg style="position:absolute;bottom:6px;right:6px;z-index:2;pointer-events:none" width="12" height="12"><path d="M2,12 L12,12 L12,2" stroke="rgba(0,255,65,0.5)" stroke-width="1.5" fill="none"/></svg>
+    <canvas id="map-canvas"></canvas>
+  </div>
+  <div class="hover-bar" id="hover-bar">
+    <span style="color:var(--muted)">روی نقشه کلیک کن</span>
+    <span style="color:var(--muted)">زمین انتخاب کن</span>
+  </div>
+  <div class="legend">
+    <div class="leg-item"><div class="leg-dot" style="background:#00ff41;box-shadow:0 0 5px #00ff41"></div>زمین من</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#006620"></div>خریداری</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#00cc33;box-shadow:0 0 4px #00cc33"></div>فروشی</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#ffcc00"></div>اجاره</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#003300"></div>داونتاون</div>
+  </div>
+</div>
+
+<!-- MARKET -->
+<div class="page" id="page-market">
+  <div class="stats-row" style="margin-bottom:14px">
+    <div class="stat-card"><div class="stat-num" id="m-sale" style="color:#00cc33">0</div><div class="stat-lbl">فروشی</div></div>
+    <div class="stat-card"><div class="stat-num" id="m-rent" style="color:#ffcc00">0</div><div class="stat-lbl">اجاره</div></div>
+    <div class="stat-card"><div class="stat-num" id="m-users">0</div><div class="stat-lbl">کاربران</div></div>
+  </div>
+  <div class="section-title">🟢 زمین‌های فروشی</div>
+  <div id="sale-list"></div>
+  <div class="section-title" style="margin-top:14px">🟡 زمین‌های اجاره</div>
+  <div id="rent-list"></div>
+</div>
+
+<!-- LEADERBOARD -->
+<div class="page" id="page-lb">
+  <div class="lb-tabs">
+    <button class="lb-tab active" onclick="loadLB('lands',this)">🏠 زمین</button>
+    <button class="lb-tab" onclick="loadLB('income',this)">💰 درآمد</button>
+    <button class="lb-tab" onclick="loadLB('visits',this)">👁 بازدید</button>
+  </div>
+  <div id="lb-list"></div>
+</div>
+
+<!-- PROFILE -->
+<div class="page" id="page-profile">
+  <div class="profile-hero">
+    <div class="big-av">🌌</div>
+    <div style="font-size:20px;font-weight:700;color:var(--g);text-shadow:0 0 10px var(--g)" id="p-name">لود...</div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:10px" id="p-user">@...</div>
+    <div class="xp-bar"><div class="xp-fill" id="p-xp" style="width:0%"></div></div>
+    <div style="font-size:9px;color:var(--muted)" id="p-xpt">XP: 0/100</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px">
+      <div style="text-align:center"><div style="font-size:18px;font-weight:700;color:var(--g);text-shadow:0 0 8px var(--g)" id="p-lc">0</div><div style="font-size:9px;color:var(--muted)">زمین</div></div>
+      <div style="text-align:center"><div style="font-size:18px;font-weight:700;color:#ffcc00" id="p-bal">0</div><div style="font-size:9px;color:var(--muted)">TON</div></div>
+      <div style="text-align:center"><div style="font-size:18px;font-weight:700;color:var(--g)" id="p-ref">0</div><div style="font-size:9px;color:var(--muted)">دعوتی</div></div>
+    </div>
+  </div>
+  <div class="section-title">زمین‌های من</div>
+  <div class="land-grid" id="my-lands"></div>
+</div>
+
+<!-- REF -->
+<div class="page" id="page-ref">
+  <div style="background:rgba(0,255,65,0.08);border:1px solid var(--border);border-radius:20px;padding:20px;text-align:center;margin-bottom:14px;position:relative;overflow:hidden">
+    <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--g),transparent)"></div>
+    <div style="font-size:40px;margin-bottom:10px">🎯</div>
+    <div style="font-size:19px;font-weight:700;margin-bottom:6px;color:var(--g);text-shadow:0 0 10px var(--g)">دعوت دوستان</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:16px">هر ۱۰ نفر = <span style="color:#ffcc00;font-weight:700">۱ زمین رایگان</span></div>
+    <div style="font-size:18px;color:var(--g);letter-spacing:4px;padding:14px;background:rgba(0,255,65,0.05);border:1px dashed var(--border);border-radius:12px;margin:0 0 14px;text-shadow:0 0 8px var(--g)" id="ref-code">...</div>
+    <button class="btn-p" onclick="copyRef()">📋 کپی لینک دعوت</button>
+  </div>
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px">
+    <div style="font-size:12px;font-weight:700;margin-bottom:12px;color:var(--g)">📊 آمار دعوت‌ها</div>
+    <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)"><span style="font-size:11px;color:var(--muted)">دعوتی‌های فعال</span><span style="font-size:12px;font-weight:700;color:var(--g)" id="r-cnt">0</span></div>
+    <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)"><span style="font-size:11px;color:var(--muted)">زمین‌های دریافتی</span><span style="font-size:12px;font-weight:700;color:#ffcc00" id="r-cl">0</span></div>
+    <div style="display:flex;justify-content:space-between;padding:8px 0"><span style="font-size:11px;color:var(--muted)">تا زمین بعدی</span><span style="font-size:12px;font-weight:700;color:var(--g)" id="r-next">۱۰ نفر</span></div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div class="page" id="page-admin">
+  <div class="adm-card">
+    <div style="font-size:14px;font-weight:700;margin-bottom:12px;color:var(--g)">👑 پنل ادمین NOVA LAND</div>
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-num" id="a-u">0</div><div class="stat-lbl">کاربران</div></div>
+      <div class="stat-card"><div class="stat-num" id="a-v" style="color:#ffcc00">0</div><div class="stat-lbl">حجم TON</div></div>
+      <div class="stat-card"><div class="stat-num" id="a-c" style="color:#00cc33">0</div><div class="stat-lbl">کمیسیون</div></div>
+    </div>
+  </div>
+  <div class="section-title">💸 ارسال TON</div>
+  <input class="input-f" id="a-to" placeholder="آیدی عددی کاربر" type="number">
+  <input class="input-f" id="a-amt" placeholder="مقدار TON" type="number" step="0.01">
+  <input class="input-f" id="a-note" placeholder="یادداشت (اختیاری)">
+  <button class="btn-p" onclick="adminSend()">💸 ارسال TON</button>
+  <div class="section-title" style="margin-top:14px">👥 آخرین کاربران</div>
+  <div id="a-users"></div>
+</div>
+</div>
+
+<!-- MODAL -->
+<div class="overlay" id="land-modal" style="display:none" onclick="if(event.target.id==='land-modal')closeModal()">
+<div class="modal">
+  <div class="modal-handle"></div>
+  <div class="land-head">
+    <div class="land-icon" id="m-icon-wrap"><span id="m-icon">🏔️</span></div>
+    <div style="flex:1">
+      <div class="land-coords" id="m-coords">X:0 Y:0</div>
+      <div class="land-title" id="m-title">زمین آزاد</div>
+      <div style="font-size:10px;color:var(--muted)" id="m-zone">حومه</div>
+    </div>
+  </div>
+  <div class="modal-tabs">
+    <button class="mtab active" onclick="mTab('info',this)">اطلاعات</button>
+    <button class="mtab" onclick="mTab('manage',this)" id="manage-tab" style="display:none">مدیریت</button>
+    <button class="mtab" onclick="mTab('activity',this)">فعالیت</button>
+  </div>
+
+  <div id="t-info">
+    <div class="info-grid">
+      <div class="ibox"><div class="ilbl">قیمت</div><div class="ival" id="m-price" style="color:#ffcc00">1 TON</div></div>
+      <div class="ibox"><div class="ilbl">وضعیت</div><div class="ival" id="m-status">🟢 آزاد</div></div>
+      <div class="ibox"><div class="ilbl">منطقه</div><div class="ival" id="m-zn">حومه</div></div>
+      <div class="ibox"><div class="ilbl">بازدید</div><div class="ival" id="m-vis" style="color:var(--g)">0</div></div>
+      <div class="ibox"><div class="ilbl">درآمد</div><div class="ival" id="m-inc" style="color:#00cc33">0 TON</div></div>
+      <div class="ibox"><div class="ilbl">افکت</div><div class="ival" id="m-eff">—</div></div>
+    </div>
+    <img id="m-img" style="display:none;width:100%;border-radius:10px;margin-bottom:12px;max-height:140px;object-fit:cover;border:1px solid var(--border)">
+    <div id="m-desc-box" style="display:none;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px;margin-bottom:12px;font-size:12px;color:var(--muted);line-height:1.7"></div>
+    <div id="m-actions"></div>
+  </div>
+
+  <div id="t-manage" style="display:none">
+    <div class="section-title">نام زمین</div>
+    <input class="input-f" id="mg-name" placeholder="اسم زمینت...">
+    <div class="section-title">توضیحات</div>
+    <input class="input-f" id="mg-desc" placeholder="توضیح کوتاه...">
+    <div class="section-title">لینک عکس</div>
+    <input class="input-f" id="mg-img" placeholder="https://... لینک عکس">
+    <div class="section-title">ساختمان</div>
+    <div class="build-grid" id="build-grid"></div>
+    <div class="section-title">افکت</div>
+    <div class="eff-grid" id="eff-grid"></div>
+    <div class="section-title">بازار</div>
+    <div class="act-grid">
+      <button class="act-btn" onclick="doSale()">🏷️ برای فروش</button>
+      <button class="act-btn" onclick="doRent()">🔑 برای اجاره</button>
+    </div>
+    <button class="btn-p" onclick="saveLand()">💾 ذخیره</button>
+  </div>
+
+  <div id="t-activity" style="display:none">
+    <div id="act-list"></div>
+  </div>
+
+  <button class="btn-close" onclick="closeModal()">بستن</button>
+</div>
+</div>
+
+<script>
+// Matrix rain animation
+(function(){
+  const c=document.getElementById('matrix-bg');
+  const ctx=c.getContext('2d');
+  c.width=window.innerWidth; c.height=window.innerHeight;
+  const cols=Math.floor(c.width/14);
+  const drops=Array(cols).fill(1);
+  function draw(){
+    ctx.fillStyle='rgba(0,10,0,0.05)';
+    ctx.fillRect(0,0,c.width,c.height);
+    ctx.fillStyle='#00ff41';
+    ctx.font='12px monospace';
+    drops.forEach((y,i)=>{
+      const ch=String.fromCharCode(0x30A0+Math.random()*96);
+      ctx.fillText(ch,i*14,y*14);
+      if(y*14>c.height&&Math.random()>0.975) drops[i]=0;
+      drops[i]++;
+    });
+  }
+  setInterval(draw,50);
+})();
+
+const API='https://novaland-production.up.railway.app';
+const BOT='novaland_bot';
+const BUILDINGS=[
+  {id:'empty',icon:'🏔️',name:'خالی'},{id:'house',icon:'🏠',name:'خانه'},
+  {id:'shop',icon:'🏪',name:'مغازه'},{id:'tower',icon:'🗼',name:'برج'},
+  {id:'castle',icon:'🏰',name:'قلعه'},{id:'temple',icon:'⛩️',name:'معبد'},
+  {id:'billboard',icon:'📢',name:'بیلبورد'},{id:'park',icon:'🌳',name:'پارک'},
+  {id:'lab',icon:'🔬',name:'آزمایشگاه'},{id:'bank',icon:'🏦',name:'بانک'},
+  {id:'art',icon:'🎨',name:'گالری'},{id:'mine',icon:'⛏️',name:'معدن'},
+];
+const EFFECTS=[
+  {id:'none',icon:'➖',name:'بدون'},{id:'fire',icon:'🔥',name:'آتش'},
+  {id:'ice',icon:'❄️',name:'یخ'},{id:'lightning',icon:'⚡',name:'رعد'},
+  {id:'matrix',icon:'💚',name:'ماتریکس'},{id:'dark',icon:'🌑',name:'تاریک'},
+  {id:'star',icon:'⭐',name:'ستاره'},{id:'neon',icon:'💡',name:'نئون'},
+];
+const ZONES={admin:'مرکز ادمین',center:'مرکزی ⭐',downtown:'داونتاون 💎',midtown:'میدتاون 🔵',suburb:'حومه',outskirts:'اطراف'};
+
+let tg=window.Telegram?.WebApp, user=null, mapData=[], myLands=[], selLand=null, selB='empty', selE='none';
+let canvas, ctx, hovLand=null, tick=0, animId=null;
+const COLS=50,ROWS=50,CELL=9;
+
+async function init(){
+  tg?.expand();
+  canvas=document.getElementById('map-canvas');
+  ctx=canvas.getContext('2d');
+  canvas.width=COLS*CELL; canvas.height=ROWS*CELL;
+  try{
+    const h={'Content-Type':'application/json'};
+    if(tg?.initData)h['X-Init-Data']=tg.initData;
+    const r=await fetch(`${API}/api/auth`,{method:'POST',headers:h,body:JSON.stringify({telegram_id:tg?.initDataUnsafe?.user?.id||0})});
+    user=await r.json();
+    if(user&&!user.error){
+      const n=user.first_name||user.username||'کاربر';
+      document.getElementById('uname').textContent=n;
+      document.getElementById('ulv').textContent=`Lv${user.level||1}`;
+      document.getElementById('p-name').textContent=n;
+      document.getElementById('p-user').textContent=`@${user.username||'anonymous'}`;
+      document.getElementById('p-bal').textContent=(user.ton_balance||0).toFixed(2);
+      document.getElementById('p-ref').textContent=user.ref_count||0;
+      document.getElementById('ref-code').textContent=user.referral_code||'---';
+      document.getElementById('r-cnt').textContent=user.ref_count||0;
+      document.getElementById('r-cl').textContent=user.ref_claimed||0;
+      document.getElementById('r-next').textContent=`${10-((user.ref_count||0)%10)} نفر`;
+      const xp=(user.xp||0)%100;
+      document.getElementById('p-xp').style.width=xp+'%';
+      document.getElementById('p-xpt').textContent=`XP: ${user.xp||0} · Level ${user.level||1}`;
+      if(user.is_admin)document.getElementById('adm-nav').style.display='flex';
+      if(user.airdrop_available)document.getElementById('airdrop-bar').style.display='flex';
+    }
+  }catch(e){}
+  await loadStats(); await loadMap(); await loadProfile();
+  loadLB('lands'); loadMarket(); if(user?.is_admin)loadAdmin();
+  canvas.addEventListener('click',onMapClick);
+  canvas.addEventListener('mousemove',onHover);
+  canvas.addEventListener('mouseleave',()=>{hovLand=null;});
+  animId=requestAnimationFrame(drawLoop);
+}
+
+async function loadStats(){
+  try{
+    const r=await fetch(`${API}/api/stats`); const d=await r.json();
+    document.getElementById('s-sold').textContent=d.sold_lands;
+    document.getElementById('s-avail').textContent=d.available;
+    document.getElementById('s-vol').textContent=d.total_volume;
+    document.getElementById('m-users').textContent=d.total_users;
+    document.getElementById('air-rem').textContent=`${d.airdrop_left} تا مونده`;
+    if(d.airdrop_left<=0)document.getElementById('airdrop-bar').style.display='none';
+  }catch(e){}
+}
+
+async function loadMap(){
+  try{const r=await fetch(`${API}/api/map`);const d=await r.json();mapData=d.lands||[];}catch(e){}
+}
+
+async function loadProfile(){
+  if(!user)return;
+  try{
+    const h={};if(tg?.initData)h['X-Init-Data']=tg.initData;
+    const r=await fetch(`${API}/api/profile?id=${user.id}`,{headers:h});
+    const d=await r.json(); myLands=d.lands||[];
+    document.getElementById('p-lc').textContent=d.land_count||0;
+    renderMyLands();
+  }catch(e){}
+}
+
+function renderMyLands(){
+  const g=document.getElementById('my-lands');
+  if(!myLands.length){g.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:30px;color:var(--muted)"><div style="font-size:40px;margin-bottom:10px">🌌</div>هنوز زمینی نداری</div>';return;}
+  g.innerHTML=myLands.map(l=>`
+    <div class="land-card" onclick="openLand(${l.x},${l.y})">
+      <div class="land-card-top"></div>
+      ${l.image_url?`<img src="${l.image_url}" class="land-img" onerror="this.style.display='none'">`:
+        `<div style="font-size:28px;text-align:center;margin-bottom:6px">${getBI(l.building)}</div>`}
+      <div style="font-size:9px;color:var(--g);margin-bottom:2px;text-shadow:0 0 6px var(--g)">${l.x},${l.y}</div>
+      <div style="font-size:12px;font-weight:600;margin-bottom:3px">${l.land_name||`زمین ${l.x},${l.y}`}</div>
+      <div style="font-size:10px;color:#ffcc00">${l.price} TON</div>
+      <div style="display:flex;gap:4px;margin-top:4px;flex-wrap:wrap">
+        ${l.is_for_sale?'<span style="background:rgba(0,204,51,0.15);border-radius:4px;padding:1px 5px;font-size:8px;color:#00cc33">فروش</span>':''}
+        ${l.is_for_rent?'<span style="background:rgba(255,204,0,0.15);border-radius:4px;padding:1px 5px;font-size:8px;color:#ffcc00">اجاره</span>':''}
+        ${getEI(l.effect)?`<span style="font-size:10px">${getEI(l.effect)}</span>`:''}
+      </div>
+    </div>`).join('');
+}
+
+function getBI(id){return BUILDINGS.find(b=>b.id===id)?.icon||'🏔️';}
+function getEI(id){return EFFECTS.find(e=>e.id===id&&id!=='none')?.icon||'';}
+
+const lmap={};
+function bLmap(){mapData.forEach(l=>{lmap[`${l.x},${l.y}`]=l;});}
+function getL(x,y){return lmap[`${x},${y}`];}
+
+function drawLoop(){
+  bLmap(); tick++;
+  const t=tick;
+  ctx.fillStyle='#000a00'; ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  // Scan line
+  const sy=(t*1.0)%(ROWS*CELL);
+  const sg=ctx.createLinearGradient(0,sy-25,0,sy+25);
+  sg.addColorStop(0,'transparent');sg.addColorStop(0.5,'rgba(0,255,65,0.03)');sg.addColorStop(1,'transparent');
+  ctx.fillStyle=sg; ctx.fillRect(0,sy-25,canvas.width,50);
+
+  const mySet=new Set(myLands.map(l=>`${l.x},${l.y}`));
+
+  for(let x=0;x<COLS;x++) for(let y=0;y<ROWS;y++){
+    const l=getL(x,y)||{zone:'outskirts',owner_id:null};
+    const px=x*CELL,py=y*CELL;
+    const isHov=hovLand?.x===x&&hovLand?.y===y;
+    const isMine=mySet.has(`${x},${y}`);
+    const p1=0.6+0.4*Math.sin(t*0.04+(x*7+y*3)*0.1);
+    const p2=0.5+0.5*Math.sin(t*0.05+(x*5+y*11)*0.08);
+
+    let color,glow='',glowB=0;
+    if(l.is_admin){color='rgba(0,255,65,0.8)';glow='#00ff41';glowB=12;}
+    else if(isMine){color=`rgba(0,255,65,${p1})`;glow='#00ff41';glowB=8;}
+    else if(l.owner_id){
+      if(l.is_for_sale){color=`rgba(0,180,50,${p2})`;glow='#00cc33';glowB=5;}
+      else if(l.is_for_rent){color=`rgba(180,150,0,${p2})`;glow='#ffcc00';glowB=4;}
+      else{color=`rgba(0,${Math.floor(80*p2)},0,0.9)`;glow='#004400';glowB=3;}
+    }else{
+      const zc={admin:'#002200',center:'#001a00',downtown:'#001200',midtown:'#000e00',suburb:'#000800',outskirts:'#000500'};
+      color=zc[l.zone]||'#000500';
+    }
+    if(isHov){glow='#00ff41';glowB=14;}
+
+    ctx.shadowColor=glow||'transparent'; ctx.shadowBlur=glowB;
+    ctx.fillStyle=color; ctx.fillRect(px+0.5,py+0.5,CELL-1,CELL-1);
+    ctx.shadowBlur=0;
+
+    // Effects
+    if(l.owner_id&&l.effect&&l.effect!=='none'){
+      const ea=0.2+0.15*Math.sin(t*0.08+(x+y)*0.2);
+      const ec={fire:`rgba(255,80,0,${ea})`,ice:`rgba(50,150,255,${ea})`,lightning:`rgba(255,255,0,${ea})`,matrix:`rgba(0,255,65,${ea})`,dark:`rgba(0,0,0,${ea*0.7})`,star:`rgba(255,210,0,${ea})`,neon:`rgba(0,255,150,${ea})`};
+      if(ec[l.effect]){ctx.fillStyle=ec[l.effect];ctx.fillRect(px+1,py+1,CELL-2,CELL-2);}
+    }
+
+    // Markers
+    if(l.is_for_sale&&!isMine){ctx.fillStyle='rgba(0,204,51,0.9)';ctx.fillRect(px+1,py+1,2,2);}
+    else if(l.is_for_rent&&!isMine){ctx.fillStyle='rgba(255,204,0,0.9)';ctx.fillRect(px+1,py+1,2,2);}
+  }
+
+  // Grid
+  ctx.strokeStyle='rgba(0,255,65,0.06)'; ctx.lineWidth=0.4;
+  for(let x=0;x<=COLS;x++){ctx.beginPath();ctx.moveTo(x*CELL,0);ctx.lineTo(x*CELL,ROWS*CELL);ctx.stroke();}
+  for(let y=0;y<=ROWS;y++){ctx.beginPath();ctx.moveTo(0,y*CELL);ctx.lineTo(COLS*CELL,y*CELL);ctx.stroke();}
+
+  // Downtown border
+  const ba=0.4+0.3*Math.sin(t*0.04);
+  ctx.strokeStyle=`rgba(0,255,65,${ba})`; ctx.lineWidth=1.5; ctx.setLineDash([4,4]); ctx.lineDashOffset=-(t*0.3);
+  ctx.strokeRect(19*CELL,19*CELL,13*CELL,13*CELL); ctx.setLineDash([]);
+  ctx.font='bold 7px monospace'; ctx.fillStyle=`rgba(0,255,65,${ba+0.2})`; ctx.textAlign='center';
+  ctx.fillText('◈ DOWNTOWN ◈',25.5*CELL,19*CELL-3);
+  ctx.fillStyle=`rgba(0,255,65,${ba*0.7})`;
+  ctx.fillText('◈ CENTER ◈',25*CELL,21.5*CELL);
+
+  animId=requestAnimationFrame(drawLoop);
+}
+
+function onMapClick(e){
+  const rect=canvas.getBoundingClientRect(),sx=canvas.width/rect.width,sy=canvas.height/rect.height;
+  const x=Math.floor((e.clientX-rect.left)*sx/CELL),y=Math.floor((e.clientY-rect.top)*sy/CELL);
+  if(x>=0&&x<COLS&&y>=0&&y<ROWS)openLand(x,y);
+}
+
+function onHover(e){
+  const rect=canvas.getBoundingClientRect(),sx=canvas.width/rect.width,sy=canvas.height/rect.height;
+  const x=Math.floor((e.clientX-rect.left)*sx/CELL),y=Math.floor((e.clientY-rect.top)*sy/CELL);
+  if(x>=0&&x<COLS&&y>=0&&y<ROWS){
+    hovLand={x,y}; const l=getL(x,y)||{};
+    document.getElementById('hover-bar').innerHTML=`
+      <span style="color:var(--g);font-size:10px;text-shadow:0 0 6px var(--g)">📍 ${x},${y}</span>
+      <span style="font-size:10px">${getBI(l.building)} ${ZONES[l.zone]||''}</span>
+      <span style="color:#ffcc00;font-size:10px">${l.price||'?'} TON ${l.is_for_sale?'🟢':l.is_for_rent?'🟡':''}</span>`;
+  }
+}
+
+async function openLand(x,y){
+  const l=getL(x,y)||{x,y,price:1,zone:'suburb'};
+  selLand=l; selB=l.building||'empty'; selE=l.effect||'none';
+  const isMine=myLands.some(m=>m.x===x&&m.y===y);
+  const isAdm=l.is_admin;
+  document.getElementById('m-icon').textContent=getBI(l.building);
+  document.getElementById('m-coords').textContent=`X:${x} · Y:${y}`;
+  document.getElementById('m-title').textContent=l.land_name||(l.owner_id?(isMine?'زمین من':'اشغال شده'):'زمین آزاد');
+  document.getElementById('m-zone').textContent=ZONES[l.zone]||'';
+  document.getElementById('m-price').textContent=`${l.price} TON`;
+  document.getElementById('m-status').textContent=isAdm?'👑 ادمین':isMine?'✅ مال من':l.owner_id?'❌ اشغال':'🟢 آزاد';
+  document.getElementById('m-zn').textContent=ZONES[l.zone]||'';
+  document.getElementById('m-vis').textContent=l.visits||0;
+  document.getElementById('m-inc').textContent=`${(l.income||0).toFixed(3)} TON`;
+  document.getElementById('m-eff').textContent=getEI(l.effect)||'—';
+  const db=document.getElementById('m-desc-box');
+  if(l.land_desc){db.style.display='block';db.textContent=l.land_desc;}else db.style.display='none';
+  const img=document.getElementById('m-img');
+  if(l.image_url){img.src=l.image_url;img.style.display='block';}else img.style.display='none';
+
+  const act=document.getElementById('m-actions');
+  if(isAdm){act.innerHTML='<div style="text-align:center;color:var(--muted);padding:10px">زمین ادمین</div>';}
+  else if(isMine){
+    act.innerHTML=`
+      ${l.is_for_sale?`<div style="background:rgba(0,204,51,0.1);border:1px solid rgba(0,204,51,0.3);border-radius:10px;padding:10px;text-align:center;margin-bottom:8px;font-size:12px;color:#00cc33">✅ برای فروش با ${l.sale_price} TON</div>`:''}
+      ${l.is_for_rent?`<div style="background:rgba(255,204,0,0.1);border:1px solid rgba(255,204,0,0.3);border-radius:10px;padding:10px;text-align:center;margin-bottom:8px;font-size:12px;color:#ffcc00">✅ اجاره با ${l.rent_price} TON/روز</div>`:''}`;
+  }else if(!l.owner_id){
+    act.innerHTML=`<button class="btn-p" onclick="doBuy()">💚 خرید با ${l.price} TON</button>`;
+  }else{
+    let h='';
+    if(l.is_for_sale)h+=`<button class="btn-p" onclick="doSecBuy()">🟢 خرید از صاحب · ${l.sale_price} TON</button>`;
+    if(l.is_for_rent)h+=`<button class="btn-s" onclick="toast('به زودی','info')">🔑 اجاره · ${l.rent_price} TON/روز</button>`;
+    if(!h)h='<div style="text-align:center;color:var(--muted);padding:10px;font-size:12px">برای فروش یا اجاره نیست</div>';
+    act.innerHTML=h;
+  }
+
+  document.getElementById('manage-tab').style.display=isMine?'block':'none';
+  if(isMine){
+    document.getElementById('mg-name').value=l.land_name||'';
+    document.getElementById('mg-desc').value=l.land_desc||'';
+    document.getElementById('mg-img').value=l.image_url||'';
+    document.getElementById('build-grid').innerHTML=BUILDINGS.map(b=>`
+      <div class="build-btn ${selB===b.id?'sel':''}" onclick="selB='${b.id}';document.querySelectorAll('.build-btn').forEach(e=>e.classList.remove('sel'));this.classList.add('sel')">
+        <div>${b.icon}</div><div>${b.name}</div>
+      </div>`).join('');
+    document.getElementById('eff-grid').innerHTML=EFFECTS.map(ef=>`
+      <div class="eff-btn ${selE===ef.id?'sel':''}" onclick="selE='${ef.id}';document.querySelectorAll('.eff-btn').forEach(e=>e.classList.remove('sel'));this.classList.add('sel')">
+        ${ef.icon}<div style="font-size:8px;color:var(--muted);margin-top:2px">${ef.name}</div>
+      </div>`).join('');
+  }
+
+  document.getElementById('act-list').innerHTML=`
+    ${l.owner_id?`<div class="lb-row"><div class="lb-rank">💚</div><div style="flex:1"><div style="font-size:12px;font-weight:600">خریداری شد</div><div style="font-size:10px;color:var(--muted)">${l.price} TON</div></div></div>`:''}
+    <div class="lb-row"><div class="lb-rank">👁</div><div style="flex:1"><div style="font-size:12px;font-weight:600">${l.visits||0} بازدید</div><div style="font-size:10px;color:var(--muted)">هر ۱۰۰۰ = ۰.۰۱ TON</div></div></div>
+    <div class="lb-row"><div class="lb-rank">💰</div><div style="flex:1"><div style="font-size:12px;font-weight:600">درآمد بازدید</div><div style="font-size:10px;color:var(--muted)">${(l.income||0).toFixed(3)} TON</div></div></div>`;
+
+  if(user&&l.owner_id&&!isMine){
+    const h={};if(tg?.initData)h['X-Init-Data']=tg.initData;
+    fetch(`${API}/api/visit`,{method:'POST',headers:{'Content-Type':'application/json',...h},body:JSON.stringify({x,y,telegram_id:user.id})}).catch(()=>{});
+  }
+
+  mTab('info',null);
+  document.getElementById('land-modal').style.display='flex';
+}
+
+function mTab(tab,btn){
+  ['info','manage','activity'].forEach(t=>document.getElementById(`t-${t}`).style.display=t===tab?'block':'none');
+  document.querySelectorAll('.mtab').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  else document.querySelectorAll('.mtab')[['info','manage','activity'].indexOf(tab)]?.classList.add('active');
+}
+
+async function doBuy(){
+  if(!user){toast('ابتدا وارد تلگرام شو','err');return;}
+  toast('در حال خرید...','info');
+  try{
+    const h={'Content-Type':'application/json'};if(tg?.initData)h['X-Init-Data']=tg.initData;
+    const r=await fetch(`${API}/api/buy`,{method:'POST',headers:h,body:JSON.stringify({x:selLand.x,y:selLand.y,tx:'tg_'+Date.now(),telegram_id:user.id})});
+    const d=await r.json();
+    if(d.success){toast('✅ زمین خریداری شد!','ok');closeModal();await loadMap();await loadProfile();await loadStats();}
+    else toast(d.error||'خطا','err');
+  }catch(e){toast('خطا در اتصال','err');}
+}
+
+async function doSecBuy(){
+  if(!user){toast('ابتدا وارد تلگرام شو','err');return;}
+  toast('در حال خرید...','info');
+  try{
+    const h={'Content-Type':'application/json'};if(tg?.initData)h['X-Init-Data']=tg.initData;
+    const r=await fetch(`${API}/api/secondary_buy`,{method:'POST',headers:h,body:JSON.stringify({x:selLand.x,y:selLand.y,tx:'tg_'+Date.now(),telegram_id:user.id})});
+    const d=await r.json();
+    if(d.success){toast('✅ خرید انجام شد!','ok');closeModal();await loadMap();await loadProfile();}
+    else toast(d.error||'خطا','err');
+  }catch(e){toast('خطا','err');}
+}
+
+async function doSale(){
+  const p=prompt('قیمت فروش (TON):','1.5');
+  if(!p)return;
+  const h={'Content-Type':'application/json'};if(tg?.initData)h['X-Init-Data']=tg.initData;
+  await fetch(`${API}/api/sell`,{method:'POST',headers:h,body:JSON.stringify({x:selLand.x,y:selLand.y,price:parseFloat(p),telegram_id:user.id})});
+  toast('✅ برای فروش گذاشتی!','ok');await loadMap();await loadProfile();closeModal();
+}
+
+async function doRent(){
+  const p=prompt('قیمت اجاره روزانه (TON):','0.1');
+  if(!p)return;
+  const h={'Content-Type':'application/json'};if(tg?.initData)h['X-Init-Data']=tg.initData;
+  await fetch(`${API}/api/rent`,{method:'POST',headers:h,body:JSON.stringify({x:selLand.x,y:selLand.y,price:parseFloat(p),telegram_id:user.id})});
+  toast('✅ برای اجاره گذاشتی!','ok');await loadMap();await loadProfile();closeModal();
+}
+
+async function saveLand(){
+  if(!selLand||!user)return;
+  const h={'Content-Type':'application/json'};if(tg?.initData)h['X-Init-Data']=tg.initData;
+  await fetch(`${API}/api/land/update`,{method:'POST',headers:h,body:JSON.stringify({
+    x:selLand.x,y:selLand.y,telegram_id:user.id,
+    building:selB,effect:selE,
+    land_name:document.getElementById('mg-name').value,
+    land_desc:document.getElementById('mg-desc').value,
+    image_url:document.getElementById('mg-img').value,
+  })});
+  toast('✅ ذخیره شد!','ok');await loadMap();await loadProfile();closeModal();
+}
+
+async function doAirdrop(){
+  if(!user){toast('ابتدا وارد شو','err');return;}
+  const h={'Content-Type':'application/json'};if(tg?.initData)h['X-Init-Data']=tg.initData;
+  const r=await fetch(`${API}/api/airdrop`,{method:'POST',headers:h,body:JSON.stringify({telegram_id:user.id})});
+  const d=await r.json();
+  if(d.success){toast('🎁 '+d.message,'ok');document.getElementById('airdrop-bar').style.display='none';await loadMap();await loadProfile();}
+  else toast(d.message,'err');
+}
+
+async function loadLB(type,btn){
+  if(btn){document.querySelectorAll('.lb-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+  try{
+    const r=await fetch(`${API}/api/leaderboard?type=${type}`);const d=await r.json();
+    const medals=['🥇','🥈','🥉','4️⃣','5️⃣','6️⃣','7️⃣','8️⃣','9️⃣','🔟'];
+    const units={lands:'زمین',income:'TON',visits:'بازدید'};
+    document.getElementById('lb-list').innerHTML=(d.data||[]).map((u,i)=>`
+      <div class="lb-row">
+        <div class="lb-rank">${medals[i]||i+1}</div>
+        <div style="flex:1"><div style="font-size:12px;font-weight:600">${u.first_name||u.username||'ناشناس'}</div><div style="font-size:10px;color:var(--muted)">Level ${u.level||1}</div></div>
+        <div class="lb-score">${u.score} <span style="font-size:9px;color:var(--muted)">${units[type]}</span></div>
+      </div>`).join('')||'<div style="text-align:center;padding:20px;color:var(--muted)">داده‌ای نیست</div>';
+  }catch(e){}
+}
+
+async function loadMarket(){
+  try{
+    const r=await fetch(`${API}/api/market`);const d=await r.json();
+    const fs=d.for_sale||[],fr=d.for_rent||[];
+    document.getElementById('m-sale').textContent=fs.length;
+    document.getElementById('m-rent').textContent=fr.length;
+    document.getElementById('sale-list').innerHTML=fs.slice(0,5).map(l=>`
+      <div class="mkt-card" onclick="openLand(${l.x},${l.y})">
+        <div class="mkt-icon">${getBI(l.building)}</div>
+        <div style="flex:1"><div style="font-size:13px;font-weight:700">${l.land_name||`زمین ${l.x},${l.y}`}</div><div style="font-size:10px;color:var(--muted);margin-top:2px">${ZONES[l.zone]||''}</div></div>
+        <div style="text-align:right"><div style="font-size:15px;font-weight:700;color:#00cc33">${l.sale_price}</div><div style="font-size:9px;color:var(--muted)">TON</div></div>
+      </div>`).join('')||'<div style="text-align:center;padding:16px;color:var(--muted)">زمین فروشی نیست</div>';
+    document.getElementById('rent-list').innerHTML=fr.slice(0,5).map(l=>`
+      <div class="mkt-card" onclick="openLand(${l.x},${l.y})">
+        <div class="mkt-icon">${getBI(l.building)}</div>
+        <div style="flex:1"><div style="font-size:13px;font-weight:700">${l.land_name||`زمین ${l.x},${l.y}`}</div></div>
+        <div style="text-align:right"><div style="font-size:13px;font-weight:700;color:#ffcc00">${l.rent_price}/روز</div><div style="font-size:9px;color:var(--muted)">TON</div></div>
+      </div>`).join('')||'<div style="text-align:center;padding:16px;color:var(--muted)">زمین اجاره‌ای نیست</div>';
+  }catch(e){}
+}
+
+async function loadAdmin(){
+  try{
+    const h={};if(tg?.initData)h['X-Init-Data']=tg.initData;
+    const r=await fetch(`${API}/api/admin/stats`,{headers:h});const d=await r.json();
+    document.getElementById('a-u').textContent=d.total_users||0;
+    document.getElementById('a-v').textContent=(d.total_volume||0).toFixed(2);
+    document.getElementById('a-c').textContent=(d.total_commission||0).toFixed(2);
+    const r2=await fetch(`${API}/api/admin/users`,{headers:h});const d2=await r2.json();
+    document.getElementById('a-users').innerHTML=(d2.users||[]).slice(0,8).map(u=>`
+      <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)">
+        <div><div style="font-size:12px;font-weight:600;color:var(--g)">${u.first_name||u.username||'ناشناس'}</div><div style="font-size:10px;color:var(--muted)">${u.telegram_id} · ${u.lc||0} زمین</div></div>
+        <div style="font-size:11px;color:#ffcc00">${(u.ton_balance||0).toFixed(2)} TON</div>
+      </div>`).join('');
+  }catch(e){}
+}
+
+async function adminSend(){
+  const to=document.getElementById('a-to').value;
+  const amt=parseFloat(document.getElementById('a-amt').value);
+  const note=document.getElementById('a-note').value;
+  if(!to||!amt){toast('آیدی و مقدار رو وارد کن','err');return;}
+  const h={'Content-Type':'application/json'};if(tg?.initData)h['X-Init-Data']=tg.initData;
+  const r=await fetch(`${API}/api/admin/send`,{method:'POST',headers:h,body:JSON.stringify({to_id:to,amount:amt,note})});
+  const d=await r.json();
+  if(d.success){toast(`✅ ${amt} TON ارسال شد`,'ok');document.getElementById('a-to').value='';document.getElementById('a-amt').value='';}
+  else toast('خطا','err');
+}
+
+function copyRef(){
+  if(!user?.referral_code)return;
+  const link=`https://t.me/${BOT}?start=${user.referral_code}`;
+  navigator.clipboard?.writeText(link).catch(()=>{});
+  toast('✅ لینک کپی شد!','ok');
+}
+
+function showPage(page,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(`page-${page}`)?.classList.add('active');
+  if(btn)btn.classList.add('active');
+  if(page==='lb')loadLB('lands');
+  if(page==='market')loadMarket();
+  if(page==='admin')loadAdmin();
+  if(page==='map')loadStats();
+}
+
+function closeModal(){document.getElementById('land-modal').style.display='none';selLand=null;}
+
+function toast(msg,type='ok'){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className=`toast ${type} show`;
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+init();
+</script>
+</body>
+</html>
