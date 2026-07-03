@@ -1,1 +1,546 @@
-test
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0"/>
+<title>NOVA LAND</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+:root{--bg:#000a00;--g:#00ff41;--g2:#00cc33;--text:#ccffcc;--muted:rgba(0,255,65,0.4);--border:rgba(0,255,65,0.2);--card:rgba(0,255,65,0.05);}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Courier New',monospace;min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 50% at 50% -5%,rgba(0,255,65,0.08),transparent 60%);pointer-events:none;z-index:0;}
+#app{position:relative;z-index:1;}
+#mx{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;opacity:0.04;pointer-events:none;}
+.hdr{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border);background:rgba(0,10,0,0.95);backdrop-filter:blur(20px);position:sticky;top:0;z-index:100;}
+.logo{font-size:18px;font-weight:900;letter-spacing:3px;color:var(--g);text-shadow:0 0 15px var(--g);}
+.logo-s{font-size:8px;letter-spacing:4px;color:var(--muted);}
+.upill{display:flex;align-items:center;gap:7px;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:5px 12px;cursor:pointer;}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--g);box-shadow:0 0 8px var(--g);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+.lv{background:rgba(0,255,65,0.15);border:1px solid var(--border);border-radius:6px;padding:1px 6px;font-size:9px;color:var(--g);}
+.nav{display:flex;background:rgba(0,10,0,0.98);border-bottom:1px solid var(--border);position:sticky;top:57px;z-index:99;}
+.nb{flex:1;padding:9px 3px;background:none;border:none;border-bottom:2px solid transparent;color:var(--muted);font-size:9px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;font-family:inherit;transition:all .2s;}
+.nb.active{color:var(--g);border-bottom-color:var(--g);}
+.page{display:none;padding:12px;}.page.active{display:block;}
+.sr{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px;}
+.sc{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:10px 6px;text-align:center;position:relative;overflow:hidden;}
+.sc::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--g),transparent);}
+.sn{font-size:17px;font-weight:900;color:var(--g);text-shadow:0 0 10px var(--g);}
+.sl{font-size:9px;color:var(--muted);margin-top:2px;letter-spacing:1px;}
+.ab{background:rgba(0,255,65,0.08);border:1px solid rgba(0,255,65,0.3);border-radius:12px;padding:10px 14px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;}
+.abtn{background:var(--g);border:none;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:700;color:#000;cursor:pointer;font-family:inherit;}
+.mw{border:1px solid var(--border);border-radius:14px;overflow:hidden;background:var(--bg);position:relative;}
+.mo{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 50%,transparent 50%,rgba(0,10,0,0.6) 100%);z-index:1;}
+#mc{display:block;width:100%;cursor:crosshair;}
+.hb{margin:6px 0 0;padding:8px 12px;background:var(--card);border:1px solid var(--border);border-radius:10px;display:flex;justify-content:space-between;align-items:center;font-size:10px;}
+.lg{display:flex;flex-wrap:wrap;gap:8px;padding:8px 0;font-size:9px;color:var(--muted);}
+.li{display:flex;align-items:center;gap:4px;}
+.ld{width:9px;height:9px;border-radius:2px;}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:200;display:flex;align-items:flex-end;backdrop-filter:blur(12px);}
+.mdl{width:100%;background:linear-gradient(180deg,#001800,var(--bg));border-top:1px solid var(--g);border-radius:24px 24px 0 0;padding:18px 16px 36px;max-height:92vh;overflow-y:auto;box-shadow:0 -10px 40px rgba(0,255,65,0.1);}
+.mh{width:34px;height:3px;background:var(--g);border-radius:2px;margin:0 auto 16px;box-shadow:0 0 8px var(--g);}
+.mts{display:flex;gap:6px;margin-bottom:14px;background:rgba(0,255,65,0.05);border-radius:10px;padding:3px;}
+.mt{flex:1;padding:8px 4px;background:transparent;border:none;border-radius:8px;color:var(--muted);font-size:10px;cursor:pointer;font-family:inherit;}
+.mt.active{background:rgba(0,255,65,0.15);color:var(--g);}
+.lhd{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.lic{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;border:1px solid var(--border);background:rgba(0,255,65,0.05);}
+.lco{font-size:10px;color:var(--g);letter-spacing:2px;text-shadow:0 0 8px var(--g);}
+.ltl{font-size:17px;font-weight:700;margin:2px 0;}
+.ig{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
+.ib{background:rgba(0,255,65,0.05);border:1px solid var(--border);border-radius:10px;padding:10px;}
+.il{font-size:9px;color:var(--muted);margin-bottom:3px;letter-spacing:1px;}
+.iv{font-size:13px;font-weight:700;}
+.bp{width:100%;padding:14px;background:var(--g);border:none;border-radius:14px;color:#000;font-size:15px;font-weight:700;cursor:pointer;margin-bottom:8px;font-family:inherit;box-shadow:0 0 20px rgba(0,255,65,0.4);}
+.bs{width:100%;padding:12px;background:var(--card);border:1px solid var(--border);border-radius:12px;color:var(--g);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:8px;font-family:inherit;}
+.bc{width:100%;background:none;border:none;color:var(--muted);font-size:11px;cursor:pointer;font-family:inherit;}
+.st{font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;}
+.inf{width:100%;background:rgba(0,255,65,0.05);border:1px solid var(--border);border-radius:10px;padding:11px 13px;color:var(--text);font-family:inherit;font-size:13px;outline:none;margin-bottom:8px;}
+.inf:focus{border-color:var(--g);}
+.bg{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px;}
+.bb{padding:10px 4px;background:var(--card);border:1px solid var(--border);border-radius:10px;cursor:pointer;text-align:center;transition:all .2s;}
+.bb.sel{background:rgba(0,255,65,0.15);border-color:var(--g);}
+.bb div:first-child{font-size:20px;margin-bottom:3px;}
+.bb div:last-child{font-size:8px;color:var(--muted);}
+.eg{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px;}
+.eb{padding:8px 4px;background:var(--card);border:1px solid var(--border);border-radius:8px;cursor:pointer;text-align:center;font-size:10px;transition:all .2s;}
+.eb.sel{background:rgba(0,255,65,0.15);border-color:var(--g);}
+.ag{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+.ab2{padding:11px 6px;background:var(--card);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;text-align:center;}
+.ph{background:linear-gradient(135deg,rgba(0,255,65,0.1),rgba(0,100,20,0.05));border:1px solid var(--border);border-radius:20px;padding:20px 18px;text-align:center;margin-bottom:12px;position:relative;overflow:hidden;}
+.ph::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--g),transparent);}
+.pa{width:68px;height:68px;border-radius:50%;background:linear-gradient(135deg,#003300,#00aa22);display:flex;align-items:center;justify-content:center;font-size:30px;margin:0 auto 10px;box-shadow:0 0 30px rgba(0,255,65,0.4);}
+.xb{height:3px;background:rgba(0,255,65,0.15);border-radius:2px;margin:10px 0 4px;overflow:hidden;}
+.xf{height:100%;background:var(--g);border-radius:2px;box-shadow:0 0 6px var(--g);}
+.lg2{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+.lc2{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px 10px;cursor:pointer;position:relative;overflow:hidden;}
+.lc2::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--g),transparent);}
+.lci{width:100%;height:60px;object-fit:cover;border-radius:8px;margin-bottom:6px;border:1px solid var(--border);}
+.lbt{display:flex;gap:6px;margin-bottom:12px;}
+.lbtn{flex:1;padding:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;font-size:10px;cursor:pointer;text-align:center;color:var(--muted);font-family:inherit;}
+.lbtn.active{background:rgba(0,255,65,0.15);border-color:var(--g);color:var(--g);}
+.lbr{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(0,255,65,0.06);}
+.lbs{font-size:13px;font-weight:700;color:var(--g);text-shadow:0 0 6px var(--g);}
+.mkc{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px;margin-bottom:10px;display:flex;align-items:center;gap:12px;cursor:pointer;}
+.mki{width:46px;height:46px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;background:rgba(0,255,65,0.08);border:1px solid var(--border);}
+.ac{background:rgba(0,255,65,0.05);border:1px solid rgba(0,255,65,0.2);border-radius:14px;padding:14px;margin-bottom:10px;}
+.toast{position:fixed;top:68px;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:16px;font-size:12px;font-weight:700;z-index:300;white-space:nowrap;backdrop-filter:blur(10px);display:none;pointer-events:none;font-family:inherit;}
+.toast.show{display:block;animation:fio 2.5s ease forwards;}
+.tok{background:rgba(0,255,65,0.15);border:1px solid var(--g);color:var(--g);box-shadow:0 0 15px rgba(0,255,65,0.2);}
+.terr{background:rgba(255,50,50,0.15);border:1px solid #f33;color:#f55;}
+.tinf{background:rgba(0,255,65,0.1);border:1px solid var(--muted);color:var(--muted);}
+@keyframes fio{0%{opacity:0;transform:translateX(-50%) translateY(-8px)}15%{opacity:1;transform:translateX(-50%) translateY(0)}75%{opacity:1}100%{opacity:0}}
+</style>
+</head>
+<body>
+<canvas id="mx"></canvas>
+<div class="toast" id="toast"></div>
+<div id="app">
+<div class="hdr">
+  <div><div class="logo">◈ NOVA LAND</div><div class="logo-s">METAVERSE · TON</div></div>
+  <div class="upill" onclick="showPage('profile')">
+    <div class="dot"></div>
+    <span id="un" style="font-size:12px;color:var(--g)">لود...</span>
+    <div class="lv" id="ulv">Lv1</div>
+  </div>
+</div>
+<div class="nav">
+  <button class="nb active" onclick="showPage('map',this)"><span style="font-size:15px">🗺</span>نقشه</button>
+  <button class="nb" onclick="showPage('market',this)"><span style="font-size:15px">🏛</span>بازار</button>
+  <button class="nb" onclick="showPage('lb',this)"><span style="font-size:15px">🏆</span>رتبه</button>
+  <button class="nb" onclick="showPage('profile',this)"><span style="font-size:15px">👤</span>من</button>
+  <button class="nb" onclick="showPage('ref',this)"><span style="font-size:15px">🎯</span>دعوت</button>
+  <button class="nb" id="an" style="display:none" onclick="showPage('admin',this)"><span style="font-size:15px">👑</span>ادمین</button>
+</div>
+<div class="page active" id="page-map">
+  <div id="airbar" class="ab" style="display:none">
+    <div><div style="font-size:13px;font-weight:700;color:var(--g)">🎁 ایردراپ فعاله!</div><div style="font-size:10px;color:var(--muted)" id="airrem">لود...</div></div>
+    <button class="abtn" onclick="doAir()">دریافت!</button>
+  </div>
+  <div class="sr">
+    <div class="sc"><div class="sn" id="ss">...</div><div class="sl">فروخته</div></div>
+    <div class="sc"><div class="sn" id="sa">...</div><div class="sl">موجود</div></div>
+    <div class="sc"><div class="sn" id="sv" style="color:#fc0;text-shadow:0 0 10px #fc0">...</div><div class="sl">TON حجم</div></div>
+  </div>
+  <div class="mw">
+    <div class="mo"></div>
+    <svg style="position:absolute;top:6px;left:6px;z-index:2;pointer-events:none" width="12" height="12"><path d="M0,10 L0,0 L10,0" stroke="rgba(0,255,65,0.5)" stroke-width="1.5" fill="none"/></svg>
+    <svg style="position:absolute;top:6px;right:6px;z-index:2;pointer-events:none" width="12" height="12"><path d="M2,0 L12,0 L12,10" stroke="rgba(0,255,65,0.5)" stroke-width="1.5" fill="none"/></svg>
+    <svg style="position:absolute;bottom:6px;left:6px;z-index:2;pointer-events:none" width="12" height="12"><path d="M0,2 L0,12 L10,12" stroke="rgba(0,255,65,0.5)" stroke-width="1.5" fill="none"/></svg>
+    <svg style="position:absolute;bottom:6px;right:6px;z-index:2;pointer-events:none" width="12" height="12"><path d="M2,12 L12,12 L12,2" stroke="rgba(0,255,65,0.5)" stroke-width="1.5" fill="none"/></svg>
+    <canvas id="mc"></canvas>
+  </div>
+  <div class="hb" id="hb"><span style="color:var(--muted)">روی نقشه کلیک کن</span><span style="color:var(--muted)">زمین انتخاب کن</span></div>
+  <div class="lg">
+    <div class="li"><div class="ld" style="background:#00ff41;box-shadow:0 0 5px #00ff41"></div>زمین من</div>
+    <div class="li"><div class="ld" style="background:#006620"></div>خریداری</div>
+    <div class="li"><div class="ld" style="background:#00cc33;box-shadow:0 0 4px #00cc33"></div>فروشی</div>
+    <div class="li"><div class="ld" style="background:#fc0"></div>اجاره</div>
+    <div class="li"><div class="ld" style="background:#003300"></div>داونتاون</div>
+  </div>
+</div>
+<div class="page" id="page-market">
+  <div class="sr" style="margin-bottom:14px">
+    <div class="sc"><div class="sn" id="ms" style="color:#0c3">0</div><div class="sl">فروشی</div></div>
+    <div class="sc"><div class="sn" id="mr" style="color:#fc0">0</div><div class="sl">اجاره</div></div>
+    <div class="sc"><div class="sn" id="mu">0</div><div class="sl">کاربران</div></div>
+  </div>
+  <div class="st">🟢 فروشی</div><div id="sl2"></div>
+  <div class="st" style="margin-top:14px">🟡 اجاره</div><div id="rl"></div>
+</div>
+<div class="page" id="page-lb">
+  <div class="lbt">
+    <button class="lbtn active" onclick="loadLB('lands',this)">🏠 زمین</button>
+    <button class="lbtn" onclick="loadLB('income',this)">💰 درآمد</button>
+    <button class="lbtn" onclick="loadLB('visits',this)">👁 بازدید</button>
+  </div>
+  <div id="lbl"></div>
+</div>
+<div class="page" id="page-profile">
+  <div class="ph">
+    <div class="pa">🌌</div>
+    <div style="font-size:20px;font-weight:700;color:var(--g);text-shadow:0 0 10px var(--g)" id="pn">لود...</div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:10px" id="pu">@...</div>
+    <div class="xb"><div class="xf" id="px" style="width:0%"></div></div>
+    <div style="font-size:9px;color:var(--muted)" id="pxt">XP: 0/100</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px">
+      <div style="text-align:center"><div style="font-size:18px;font-weight:700;color:var(--g);text-shadow:0 0 8px var(--g)" id="plc">0</div><div style="font-size:9px;color:var(--muted)">زمین</div></div>
+      <div style="text-align:center"><div style="font-size:18px;font-weight:700;color:#fc0" id="pb">0</div><div style="font-size:9px;color:var(--muted)">TON</div></div>
+      <div style="text-align:center"><div style="font-size:18px;font-weight:700;color:var(--g)" id="pr">0</div><div style="font-size:9px;color:var(--muted)">دعوتی</div></div>
+    </div>
+  </div>
+  <div class="st">زمین‌های من</div>
+  <div class="lg2" id="ml"></div>
+</div>
+<div class="page" id="page-ref">
+  <div style="background:rgba(0,255,65,0.08);border:1px solid var(--border);border-radius:20px;padding:20px;text-align:center;margin-bottom:14px;position:relative;overflow:hidden">
+    <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--g),transparent)"></div>
+    <div style="font-size:40px;margin-bottom:10px">🎯</div>
+    <div style="font-size:19px;font-weight:700;margin-bottom:6px;color:var(--g)">دعوت دوستان</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:16px">هر ۱۰ نفر = <span style="color:#fc0;font-weight:700">۱ زمین رایگان</span></div>
+    <div style="font-size:18px;color:var(--g);letter-spacing:4px;padding:14px;background:rgba(0,255,65,0.05);border:1px dashed var(--border);border-radius:12px;margin:0 0 14px;text-shadow:0 0 8px var(--g)" id="rc">...</div>
+    <button class="bp" onclick="copyRef()">📋 کپی لینک</button>
+  </div>
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px">
+    <div style="font-size:12px;font-weight:700;margin-bottom:12px;color:var(--g)">📊 آمار دعوت‌ها</div>
+    <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)"><span style="font-size:11px;color:var(--muted)">دعوتی‌های فعال</span><span style="font-size:12px;font-weight:700;color:var(--g)" id="rcnt">0</span></div>
+    <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)"><span style="font-size:11px;color:var(--muted)">زمین‌های دریافتی</span><span style="font-size:12px;font-weight:700;color:#fc0" id="rcl">0</span></div>
+    <div style="display:flex;justify-content:space-between;padding:8px 0"><span style="font-size:11px;color:var(--muted)">تا زمین بعدی</span><span style="font-size:12px;font-weight:700;color:var(--g)" id="rnx">۱۰ نفر</span></div>
+  </div>
+</div>
+<div class="page" id="page-admin">
+  <div class="ac">
+    <div style="font-size:14px;font-weight:700;margin-bottom:12px;color:var(--g)">👑 پنل ادمین</div>
+    <div class="sr">
+      <div class="sc"><div class="sn" id="au">0</div><div class="sl">کاربران</div></div>
+      <div class="sc"><div class="sn" id="av" style="color:#fc0">0</div><div class="sl">TON</div></div>
+      <div class="sc"><div class="sn" id="ac2" style="color:#0c3">0</div><div class="sl">کمیسیون</div></div>
+    </div>
+  </div>
+  <div class="st">💸 ارسال TON</div>
+  <input class="inf" id="ato" placeholder="آیدی عددی کاربر" type="number">
+  <input class="inf" id="aamt" placeholder="مقدار TON" type="number" step="0.01">
+  <input class="inf" id="anote" placeholder="یادداشت">
+  <button class="bp" onclick="adminSend()">💸 ارسال</button>
+  <div class="st" style="margin-top:14px">👥 آخرین کاربران</div>
+  <div id="aulist"></div>
+</div>
+</div>
+<div class="ov" id="lm" style="display:none" onclick="if(event.target.id==='lm')closeModal()">
+<div class="mdl">
+  <div class="mh"></div>
+  <div class="lhd">
+    <div class="lic"><span id="mi">🏔️</span></div>
+    <div style="flex:1">
+      <div class="lco" id="mc2">X:0 Y:0</div>
+      <div class="ltl" id="mtl">زمین آزاد</div>
+      <div style="font-size:10px;color:var(--muted)" id="mzn">حومه</div>
+    </div>
+  </div>
+  <div class="mts">
+    <button class="mt active" onclick="mTab('info',this)">اطلاعات</button>
+    <button class="mt" onclick="mTab('manage',this)" id="mgt" style="display:none">مدیریت</button>
+    <button class="mt" onclick="mTab('act',this)">فعالیت</button>
+  </div>
+  <div id="ti">
+    <div class="ig">
+      <div class="ib"><div class="il">قیمت</div><div class="iv" id="mpr" style="color:#fc0">1 TON</div></div>
+      <div class="ib"><div class="il">وضعیت</div><div class="iv" id="mst">🟢 آزاد</div></div>
+      <div class="ib"><div class="il">منطقه</div><div class="iv" id="mz2">حومه</div></div>
+      <div class="ib"><div class="il">بازدید</div><div class="iv" id="mvi" style="color:var(--g)">0</div></div>
+      <div class="ib"><div class="il">درآمد</div><div class="iv" id="min2" style="color:#0c3">0 TON</div></div>
+      <div class="ib"><div class="il">افکت</div><div class="iv" id="mef">—</div></div>
+    </div>
+    <img id="mimg" style="display:none;width:100%;border-radius:10px;margin-bottom:12px;max-height:140px;object-fit:cover;border:1px solid var(--border)">
+    <div id="mdb" style="display:none;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px;margin-bottom:12px;font-size:12px;color:var(--muted);line-height:1.7"></div>
+    <div id="mac"></div>
+  </div>
+  <div id="tm" style="display:none">
+    <div class="st">نام زمین</div><input class="inf" id="mgn" placeholder="اسم زمینت...">
+    <div class="st">توضیحات</div><input class="inf" id="mgd" placeholder="توضیح کوتاه...">
+    <div class="st">لینک عکس</div><input class="inf" id="mgi" placeholder="https://...">
+    <div class="st">ساختمان</div><div class="bg" id="bgr"></div>
+    <div class="st">افکت</div><div class="eg" id="egr"></div>
+    <div class="st">بازار</div>
+    <div class="ag"><button class="ab2" onclick="doSale()">🏷️ فروش</button><button class="ab2" onclick="doRent()">🔑 اجاره</button></div>
+    <button class="bp" onclick="saveLand()">💾 ذخیره</button>
+  </div>
+  <div id="ta" style="display:none"><div id="acl"></div></div>
+  <button class="bc" onclick="closeModal()">بستن</button>
+</div>
+</div>
+<script>
+(function(){const c=document.getElementById('mx'),x=c.getContext('2d');c.width=window.innerWidth;c.height=window.innerHeight;const cols=Math.floor(c.width/14),drops=Array(cols).fill(1);function d(){x.fillStyle='rgba(0,10,0,0.05)';x.fillRect(0,0,c.width,c.height);x.fillStyle='#00ff41';x.font='12px monospace';drops.forEach((y,i)=>{const ch=String.fromCharCode(0x30A0+Math.random()*96);x.fillText(ch,i*14,y*14);if(y*14>c.height&&Math.random()>0.975)drops[i]=0;drops[i]++;});}setInterval(d,50);})();
+const API='https://novaland-production.up.railway.app';
+const BOT='novaland_bot';
+const BL=[{id:'empty',icon:'🏔️',name:'خالی'},{id:'house',icon:'🏠',name:'خانه'},{id:'shop',icon:'🏪',name:'مغازه'},{id:'tower',icon:'🗼',name:'برج'},{id:'castle',icon:'🏰',name:'قلعه'},{id:'temple',icon:'⛩️',name:'معبد'},{id:'billboard',icon:'📢',name:'بیلبورد'},{id:'park',icon:'🌳',name:'پارک'},{id:'lab',icon:'🔬',name:'آزمایشگاه'},{id:'bank',icon:'🏦',name:'بانک'},{id:'art',icon:'🎨',name:'گالری'},{id:'mine',icon:'⛏️',name:'معدن'}];
+const EL=[{id:'none',icon:'➖',name:'بدون'},{id:'fire',icon:'🔥',name:'آتش'},{id:'ice',icon:'❄️',name:'یخ'},{id:'lightning',icon:'⚡',name:'رعد'},{id:'matrix',icon:'💚',name:'ماتریکس'},{id:'dark',icon:'🌑',name:'تاریک'},{id:'star',icon:'⭐',name:'ستاره'},{id:'neon',icon:'💡',name:'نئون'}];
+const ZN={admin:'مرکز ادمین',center:'مرکزی ⭐',downtown:'داونتاون 💎',midtown:'میدتاون',suburb:'حومه',outskirts:'اطراف'};
+let tg=window.Telegram?.WebApp,user=null,mapData=[],myLands=[],selLand=null,selB='empty',selE='none';
+let canvas,ctx,hovLand=null,tick=0;
+const C=50,R=50,CE=9;
+async function init(){
+  tg?.expand();
+  canvas=document.getElementById('mc');ctx=canvas.getContext('2d');
+  canvas.width=C*CE;canvas.height=R*CE;
+  try{
+    const h={'Content-Type':'application/json'};if(tg?.initData)h['X-Init-Data']=tg.initData;
+    const r=await fetch(`${API}/api/auth`,{method:'POST',headers:h,body:JSON.stringify({telegram_id:tg?.initDataUnsafe?.user?.id||0})});
+    user=await r.json();
+    if(user&&!user.error){
+      const n=user.first_name||user.username||'کاربر';
+      document.getElementById('un').textContent=n;
+      document.getElementById('ulv').textContent=`Lv${user.level||1}`;
+      document.getElementById('pn').textContent=n;
+      document.getElementById('pu').textContent=`@${user.username||'anonymous'}`;
+      document.getElementById('pb').textContent=(user.ton_balance||0).toFixed(2);
+      document.getElementById('pr').textContent=user.ref_count||0;
+      document.getElementById('rc').textContent=user.referral_code||'---';
+      document.getElementById('rcnt').textContent=user.ref_count||0;
+      document.getElementById('rcl').textContent=user.ref_claimed||0;
+      document.getElementById('rnx').textContent=`${10-((user.ref_count||0)%10)} نفر`;
+      const xp=(user.xp||0)%100;
+      document.getElementById('px').style.width=xp+'%';
+      document.getElementById('pxt').textContent=`XP: ${user.xp||0} · Lv${user.level||1}`;
+      if(user.is_admin)document.getElementById('an').style.display='flex';
+      if(user.airdrop_available)document.getElementById('airbar').style.display='flex';
+    }
+  }catch(e){}
+  await loadStats();await loadMap();await loadProfile();
+  loadLB('lands');loadMarket();if(user?.is_admin)loadAdmin();
+  canvas.addEventListener('click',onC);
+  canvas.addEventListener('mousemove',onH);
+  canvas.addEventListener('mouseleave',()=>{hovLand=null;});
+  requestAnimationFrame(draw);
+}
+async function loadStats(){
+  try{const r=await fetch(`${API}/api/stats`);const d=await r.json();
+  document.getElementById('ss').textContent=d.sold_lands;
+  document.getElementById('sa').textContent=d.available;
+  document.getElementById('sv').textContent=d.total_volume;
+  document.getElementById('mu').textContent=d.total_users;
+  document.getElementById('airrem').textContent=`${d.airdrop_left} تا مونده`;
+  if(d.airdrop_left<=0)document.getElementById('airbar').style.display='none';
+  }catch(e){}
+}
+async function loadMap(){
+  try{const r=await fetch(`${API}/api/map`);const d=await r.json();mapData=d.lands||[];}catch(e){}
+}
+async function loadProfile(){
+  if(!user)return;
+  try{const h={};if(tg?.initData)h['X-Init-Data']=tg.initData;
+  const r=await fetch(`${API}/api/profile?id=${user.id}`,{headers:h});
+  const d=await r.json();myLands=d.lands||[];
+  document.getElementById('plc').textContent=d.land_count||0;
+  renderML();}catch(e){}
+}
+function getBI(id){return BL.find(b=>b.id===id)?.icon||'🏔️';}
+function getEI(id){return EL.find(e=>e.id===id&&id!=='none')?.icon||'';}
+function renderML(){
+  const g=document.getElementById('ml');
+  if(!myLands.length){g.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:30px;color:var(--muted)"><div style="font-size:40px;margin-bottom:10px">🌌</div>هنوز زمینی نداری</div>';return;}
+  g.innerHTML=myLands.map(l=>`<div class="lc2" onclick="openLand(${l.x},${l.y})">
+    ${l.image_url?`<img src="${l.image_url}" class="lci" onerror="this.style.display='none'">`:`<div style="font-size:28px;text-align:center;margin-bottom:6px">${getBI(l.building)}</div>`}
+    <div style="font-size:9px;color:var(--g);margin-bottom:2px">${l.x},${l.y}</div>
+    <div style="font-size:12px;font-weight:600;margin-bottom:3px">${l.land_name||`زمین ${l.x},${l.y}`}</div>
+    <div style="font-size:10px;color:#fc0">${l.price} TON</div>
+    <div style="display:flex;gap:4px;margin-top:4px;flex-wrap:wrap">
+      ${l.is_for_sale?'<span style="background:rgba(0,204,51,.15);border-radius:4px;padding:1px 5px;font-size:8px;color:#0c3">فروش</span>':''}
+      ${l.is_for_rent?'<span style="background:rgba(255,204,0,.15);border-radius:4px;padding:1px 5px;font-size:8px;color:#fc0">اجاره</span>':''}
+      ${getEI(l.effect)?`<span style="font-size:10px">${getEI(l.effect)}</span>`:''}
+    </div></div>`).join('');
+}
+const lm={};function bL(){mapData.forEach(l=>{lm[`${l.x},${l.y}`]=l;});}
+function getL(x,y){return lm[`${x},${y}`];}
+function draw(){
+  bL();tick++;const t=tick;
+  ctx.fillStyle='#000a00';ctx.fillRect(0,0,canvas.width,canvas.height);
+  const sy=(t*1.0)%(R*CE);
+  const sg=ctx.createLinearGradient(0,sy-25,0,sy+25);
+  sg.addColorStop(0,'transparent');sg.addColorStop(.5,'rgba(0,255,65,.03)');sg.addColorStop(1,'transparent');
+  ctx.fillStyle=sg;ctx.fillRect(0,sy-25,canvas.width,50);
+  const ms=new Set(myLands.map(l=>`${l.x},${l.y}`));
+  for(let x=0;x<C;x++)for(let y=0;y<R;y++){
+    const l=getL(x,y)||{zone:'outskirts',owner_id:null};
+    const px=x*CE,py=y*CE;
+    const ih=hovLand?.x===x&&hovLand?.y===y;
+    const im=ms.has(`${x},${y}`);
+    const p1=.6+.4*Math.sin(t*.04+(x*7+y*3)*.1);
+    const p2=.5+.5*Math.sin(t*.05+(x*5+y*11)*.08);
+    let cl,gc='',gb=0;
+    if(l.is_admin){cl='rgba(0,255,65,.8)';gc='#00ff41';gb=12;}
+    else if(im){cl=`rgba(0,255,65,${p1})`;gc='#00ff41';gb=8;}
+    else if(l.owner_id){
+      if(l.is_for_sale){cl=`rgba(0,180,50,${p2})`;gc='#00cc33';gb=5;}
+      else if(l.is_for_rent){cl=`rgba(180,150,0,${p2})`;gc='#fc0';gb=4;}
+      else{cl=`rgba(0,${Math.floor(80*p2)},0,.9)`;gc='#004400';gb=3;}
+    }else{
+      const zc={admin:'#002200',center:'#001a00',downtown:'#001200',midtown:'#000e00',suburb:'#000800',outskirts:'#000500'};
+      cl=zc[l.zone]||'#000500';
+    }
+    if(ih){gc='#00ff41';gb=14;}
+    ctx.shadowColor=gc||'transparent';ctx.shadowBlur=gb;
+    ctx.fillStyle=cl;ctx.fillRect(px+.5,py+.5,CE-1,CE-1);
+    ctx.shadowBlur=0;
+    if(l.owner_id&&l.effect&&l.effect!=='none'){
+      const ea=.2+.15*Math.sin(t*.08+(x+y)*.2);
+      const ec={fire:`rgba(255,80,0,${ea})`,ice:`rgba(50,150,255,${ea})`,lightning:`rgba(255,255,0,${ea})`,matrix:`rgba(0,255,65,${ea})`,dark:`rgba(0,0,0,${ea*.7})`,star:`rgba(255,210,0,${ea})`,neon:`rgba(0,255,150,${ea})`};
+      if(ec[l.effect]){ctx.fillStyle=ec[l.effect];ctx.fillRect(px+1,py+1,CE-2,CE-2);}
+    }
+    if(l.is_for_sale&&!im){ctx.fillStyle='rgba(0,204,51,.9)';ctx.fillRect(px+1,py+1,2,2);}
+    else if(l.is_for_rent&&!im){ctx.fillStyle='rgba(255,204,0,.9)';ctx.fillRect(px+1,py+1,2,2);}
+  }
+  ctx.strokeStyle='rgba(0,255,65,.06)';ctx.lineWidth=.4;
+  for(let x=0;x<=C;x++){ctx.beginPath();ctx.moveTo(x*CE,0);ctx.lineTo(x*CE,R*CE);ctx.stroke();}
+  for(let y=0;y<=R;y++){ctx.beginPath();ctx.moveTo(0,y*CE);ctx.lineTo(C*CE,y*CE);ctx.stroke();}
+  const ba=.4+.3*Math.sin(t*.04);
+  ctx.strokeStyle=`rgba(0,255,65,${ba})`;ctx.lineWidth=1.5;ctx.setLineDash([4,4]);ctx.lineDashOffset=-(t*.3);
+  ctx.strokeRect(19*CE,19*CE,13*CE,13*CE);ctx.setLineDash([]);
+  ctx.font='bold 7px monospace';ctx.fillStyle=`rgba(0,255,65,${ba+.2})`;ctx.textAlign='center';
+  ctx.fillText('◈ DOWNTOWN ◈',25.5*CE,19*CE-3);
+  ctx.fillStyle=`rgba(0,255,65,${ba*.7})`;ctx.fillText('◈ CENTER ◈',25*CE,21.5*CE);
+  requestAnimationFrame(draw);
+}
+function onC(e){
+  const rect=canvas.getBoundingClientRect(),sx=canvas.width/rect.width,sy=canvas.height/rect.height;
+  const x=Math.floor((e.clientX-rect.left)*sx/CE),y=Math.floor((e.clientY-rect.top)*sy/CE);
+  if(x>=0&&x<C&&y>=0&&y<R)openLand(x,y);
+}
+function onH(e){
+  const rect=canvas.getBoundingClientRect(),sx=canvas.width/rect.width,sy=canvas.height/rect.height;
+  const x=Math.floor((e.clientX-rect.left)*sx/CE),y=Math.floor((e.clientY-rect.top)*sy/CE);
+  if(x>=0&&x<C&&y>=0&&y<R){
+    hovLand={x,y};const l=getL(x,y)||{};
+    document.getElementById('hb').innerHTML=`<span style="color:var(--g);font-size:10px">📍 ${x},${y}</span><span style="font-size:10px">${getBI(l.building)} ${ZN[l.zone]||''}</span><span style="color:#fc0;font-size:10px">${l.price||'?'} TON ${l.is_for_sale?'🟢':l.is_for_rent?'🟡':''}</span>`;
+  }
+}
+async function openLand(x,y){
+  const l=getL(x,y)||{x,y,price:1,zone:'suburb'};
+  selLand=l;selB=l.building||'empty';selE=l.effect||'none';
+  const im=myLands.some(m=>m.x===x&&m.y===y);
+  const ia=l.is_admin;
+  document.getElementById('mi').textContent=getBI(l.building);
+  document.getElementById('mc2').textContent=`X:${x} · Y:${y}`;
+  document.getElementById('mtl').textContent=l.land_name||(l.owner_id?(im?'زمین من':'اشغال شده'):'زمین آزاد');
+  document.getElementById('mzn').textContent=ZN[l.zone]||'';
+  document.getElementById('mpr').textContent=`${l.price} TON`;
+  document.getElementById('mst').textContent=ia?'👑 ادمین':im?'✅ مال من':l.owner_id?'❌ اشغال':'🟢 آزاد';
+  document.getElementById('mz2').textContent=ZN[l.zone]||'';
+  document.getElementById('mvi').textContent=l.visits||0;
+  document.getElementById('min2').textContent=`${(l.income||0).toFixed(3)} TON`;
+  document.getElementById('mef').textContent=getEI(l.effect)||'—';
+  const db=document.getElementById('mdb');
+  if(l.land_desc){db.style.display='block';db.textContent=l.land_desc;}else db.style.display='none';
+  const img=document.getElementById('mimg');
+  if(l.image_url){img.src=l.image_url;img.style.display='block';}else img.style.display='none';
+  const ac=document.getElementById('mac');
+  if(ia){ac.innerHTML='<div style="text-align:center;color:var(--muted);padding:10px">زمین ادمین</div>';}
+  else if(im){ac.innerHTML=`${l.is_for_sale?`<div style="background:rgba(0,204,51,.1);border:1px solid rgba(0,204,51,.3);border-radius:10px;padding:10px;text-align:center;margin-bottom:8px;font-size:12px;color:#0c3">✅ برای فروش با ${l.sale_price} TON</div>`:''}${l.is_for_rent?`<div style="background:rgba(255,204,0,.1);border:1px solid rgba(255,204,0,.3);border-radius:10px;padding:10px;text-align:center;margin-bottom:8px;font-size:12px;color:#fc0">✅ اجاره با ${l.rent_price} TON/روز</div>`:''}`;}
+  else if(!l.owner_id){ac.innerHTML=`<button class="bp" onclick="doBuy()">💚 خرید با ${l.price} TON</button>`;}
+  else{
+    let h='';
+    if(l.is_for_sale)h+=`<button class="bp" onclick="doSec()">🟢 خرید · ${l.sale_price} TON</button>`;
+    if(l.is_for_rent)h+=`<button class="bs" onclick="toast('به زودی','tinf')">🔑 اجاره · ${l.rent_price} TON/روز</button>`;
+    if(!h)h='<div style="text-align:center;color:var(--muted);padding:10px;font-size:12px">برای فروش یا اجاره نیست</div>';
+    ac.innerHTML=h;
+  }
+  document.getElementById('mgt').style.display=im?'block':'none';
+  if(im){
+    document.getElementById('mgn').value=l.land_name||'';
+    document.getElementById('mgd').value=l.land_desc||'';
+    document.getElementById('mgi').value=l.image_url||'';
+    document.getElementById('bgr').innerHTML=BL.map(b=>`<div class="bb ${selB===b.id?'sel':''}" onclick="selB='${b.id}';document.querySelectorAll('.bb').forEach(e=>e.classList.remove('sel'));this.classList.add('sel')"><div>${b.icon}</div><div>${b.name}</div></div>`).join('');
+    document.getElementById('egr').innerHTML=EL.map(ef=>`<div class="eb ${selE===ef.id?'sel':''}" onclick="selE='${ef.id}';document.querySelectorAll('.eb').forEach(e=>e.classList.remove('sel'));this.classList.add('sel')">${ef.icon}<div style="font-size:8px;color:var(--muted);margin-top:2px">${ef.name}</div></div>`).join('');
+  }
+  document.getElementById('acl').innerHTML=`${l.owner_id?`<div class="lbr"><div style="width:28px;text-align:center">💚</div><div style="flex:1"><div style="font-size:12px;font-weight:600">خریداری شد</div><div style="font-size:10px;color:var(--muted)">${l.price} TON</div></div></div>`:''}
+  <div class="lbr"><div style="width:28px;text-align:center">👁</div><div style="flex:1"><div style="font-size:12px;font-weight:600">${l.visits||0} بازدید</div><div style="font-size:10px;color:var(--muted)">هر ۱۰۰۰ = ۰.۰۱ TON</div></div></div>
+  <div class="lbr"><div style="width:28px;text-align:center">💰</div><div style="flex:1"><div style="font-size:12px;font-weight:600">درآمد</div><div style="font-size:10px;color:var(--muted)">${(l.income||0).toFixed(3)} TON</div></div></div>`;
+  if(user&&l.owner_id&&!im){const h={};if(tg?.initData)h['X-Init-Data']=tg.initData;fetch(`${API}/api/visit`,{method:'POST',headers:{'Content-Type':'application/json',...h},body:JSON.stringify({x,y,telegram_id:user.id})}).catch(()=>{});}
+  mTab('info',null);
+  document.getElementById('lm').style.display='flex';
+}
+function mTab(tab,btn){
+  ['info','manage','act'].forEach(t=>document.getElementById(`t${t[0]}`).style.display=t===tab?'block':'none');
+  document.querySelectorAll('.mt').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  else document.querySelectorAll('.mt')[['info','manage','act'].indexOf(tab)]?.classList.add('active');
+}
+async function doBuy(){
+  if(!user){toast('ابتدا وارد تلگرام شو','terr');return;}
+  toast('در حال خرید...','tinf');
+  try{const h={'Content-Type':'application/json'};if(tg?.initData)h['X-Init-Data']=tg.initData;
+  const r=await fetch(`${API}/api/buy`,{method:'POST',headers:h,body:JSON.stringify({x:selLand.x,y:selLand.y,tx:'tg_'+Date.now(),telegram_id:user.id})});
+  const d=await r.json();
+  if(d.success){toast('✅ زمین خریداری شد!','tok');closeModal();await loadMap();await loadProfile();await loadStats();}
+  else toast(d.error||'خطا','terr');}catch(e){toast('خطا در اتصال','terr');}
+}
+async function doSec(){
+  if(!user){toast('ابتدا وارد شو','terr');return;}
+  toast('در حال خرید...','tinf');
+  try{const h={'Content-Type':'application/json'};if(tg?.initData)h['X-Init-Data']=tg.initData;
+  const r=await fetch(`${API}/api/secondary_buy`,{method:'POST',headers:h,body:JSON.stringify({x:selLand.x,y:selLand.y,tx:'tg_'+Date.now(),telegram_id:user.id})});
+  const d=await r.json();
+  if(d.success){toast('✅ خرید انجام شد!','tok');closeModal();await loadMap();await loadProfile();}
+  else toast(d.error||'خطا','terr');}catch(e){toast('خطا','terr');}
+}
+async function doSale(){
+  const p=prompt('قیمت فروش (TON):','1.5');if(!p)return;
+  const h={'Content-Type':'application/json'};if(tg?.initData)h['X-Init-Data']=tg.initData;
+  await fetch(`${API}/api/sell`,{method:'POST',headers:h,body:JSON.stringify({x:selLand.x,y:selLand.y,price:parseFloat(p),telegram_id:user.id})});
+  toast('✅ برای فروش گذاشتی!','tok');await loadMap();await loadProfile();closeModal();
+}
+async function doRent(){
+  const p=prompt('قیمت اجاره (TON/روز):','0.1');if(!p)return;
+  const h={'Content-Type':'application/json'};if(tg?.initData)h['X-Init-Data']=tg.initData;
+  await fetch(`${API}/api/rent`,{method:'POST',headers:h,body:JSON.stringify({x:selLand.x,y:selLand.y,price:parseFloat(p),telegram_id:user.id})});
+  toast('✅ برای اجاره گذاشتی!','tok');await loadMap();await loadProfile();closeModal();
+}
+async function saveLand(){
+  if(!selLand||!user)return;
+  const h={'Content-Type':'application/json'};if(tg?.initData)h['X-Init-Data']=tg.initData;
+  await fetch(`${API}/api/land/update`,{method:'POST',headers:h,body:JSON.stringify({x:selLand.x,y:selLand.y,telegram_id:user.id,building:selB,effect:selE,land_name:document.getElementById('mgn').value,land_desc:document.getElementById('mgd').value,image_url:document.getElementById('mgi').value})});
+  toast('✅ ذخیره شد!','tok');await loadMap();await loadProfile();closeModal();
+}
+async function doAir(){
+  if(!user){toast('ابتدا وارد شو','terr');return;}
+  const h={'Content-Type':'application/json'};if(tg?.initData)h['X-Init-Data']=tg.initData;
+  const r=await fetch(`${API}/api/airdrop`,{method:'POST',headers:h,body:JSON.stringify({telegram_id:user.id})});
+  const d=await r.json();
+  if(d.success){toast('🎁 '+d.message,'tok');document.getElementById('airbar').style.display='none';await loadMap();await loadProfile();}
+  else toast(d.message,'terr');
+}
+async function loadLB(type,btn){
+  if(btn){document.querySelectorAll('.lbtn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+  try{const r=await fetch(`${API}/api/leaderboard?type=${type}`);const d=await r.json();
+  const med=['🥇','🥈','🥉','4️⃣','5️⃣','6️⃣','7️⃣','8️⃣','9️⃣','🔟'];
+  const un={lands:'زمین',income:'TON',visits:'بازدید'};
+  document.getElementById('lbl').innerHTML=(d.data||[]).map((u,i)=>`<div class="lbr"><div style="width:28px;text-align:center;font-size:14px">${med[i]||i+1}</div><div style="flex:1"><div style="font-size:12px;font-weight:600">${u.first_name||u.username||'ناشناس'}</div><div style="font-size:10px;color:var(--muted)">Level ${u.level||1}</div></div><div class="lbs">${u.score} <span style="font-size:9px;color:var(--muted)">${un[type]}</span></div></div>`).join('')||'<div style="text-align:center;padding:20px;color:var(--muted)">داده‌ای نیست</div>';}catch(e){}
+}
+async function loadMarket(){
+  try{const r=await fetch(`${API}/api/market`);const d=await r.json();
+  const fs=d.for_sale||[],fr=d.for_rent||[];
+  document.getElementById('ms').textContent=fs.length;
+  document.getElementById('mr').textContent=fr.length;
+  document.getElementById('sl2').innerHTML=fs.slice(0,5).map(l=>`<div class="mkc" onclick="openLand(${l.x},${l.y})"><div class="mki">${getBI(l.building)}</div><div style="flex:1"><div style="font-size:13px;font-weight:700">${l.land_name||`زمین ${l.x},${l.y}`}</div><div style="font-size:10px;color:var(--muted);margin-top:2px">${ZN[l.zone]||''}</div></div><div style="text-align:right"><div style="font-size:15px;font-weight:700;color:#0c3">${l.sale_price}</div><div style="font-size:9px;color:var(--muted)">TON</div></div></div>`).join('')||'<div style="text-align:center;padding:16px;color:var(--muted)">زمین فروشی نیست</div>';
+  document.getElementById('rl').innerHTML=fr.slice(0,5).map(l=>`<div class="mkc" onclick="openLand(${l.x},${l.y})"><div class="mki">${getBI(l.building)}</div><div style="flex:1"><div style="font-size:13px;font-weight:700">${l.land_name||`زمین ${l.x},${l.y}`}</div></div><div style="text-align:right"><div style="font-size:13px;font-weight:700;color:#fc0">${l.rent_price}/روز</div><div style="font-size:9px;color:var(--muted)">TON</div></div></div>`).join('')||'<div style="text-align:center;padding:16px;color:var(--muted)">زمین اجاره‌ای نیست</div>';}catch(e){}
+}
+async function loadAdmin(){
+  try{const h={};if(tg?.initData)h['X-Init-Data']=tg.initData;
+  const r=await fetch(`${API}/api/admin/stats`,{headers:h});const d=await r.json();
+  document.getElementById('au').textContent=d.total_users||0;
+  document.getElementById('av').textContent=(d.total_volume||0).toFixed(2);
+  document.getElementById('ac2').textContent=(d.total_commission||0).toFixed(2);
+  const r2=await fetch(`${API}/api/admin/users`,{headers:h});const d2=await r2.json();
+  document.getElementById('aulist').innerHTML=(d2.users||[]).slice(0,8).map(u=>`<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)"><div><div style="font-size:12px;font-weight:600;color:var(--g)">${u.first_name||u.username||'ناشناس'}</div><div style="font-size:10px;color:var(--muted)">${u.telegram_id} · ${u.lc||0} زمین</div></div><div style="font-size:11px;color:#fc0">${(u.ton_balance||0).toFixed(2)} TON</div></div>`).join('');}catch(e){}
+}
+async function adminSend(){
+  const to=document.getElementById('ato').value,amt=parseFloat(document.getElementById('aamt').value),note=document.getElementById('anote').value;
+  if(!to||!amt){toast('آیدی و مقدار رو وارد کن','terr');return;}
+  const h={'Content-Type':'application/json'};if(tg?.initData)h['X-Init-Data']=tg.initData;
+  const r=await fetch(`${API}/api/admin/send`,{method:'POST',headers:h,body:JSON.stringify({to_id:to,amount:amt,note})});
+  const d=await r.json();
+  if(d.success){toast(`✅ ${amt} TON ارسال شد`,'tok');document.getElementById('ato').value='';document.getElementById('aamt').value='';}
+  else toast('خطا','terr');
+}
+function copyRef(){
+  if(!user?.referral_code)return;
+  const link=`https://t.me/${BOT}?start=${user.referral_code}`;
+  navigator.clipboard?.writeText(link).catch(()=>{});
+  toast('✅ لینک کپی شد!','tok');
+}
+function showPage(page,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('active'));
+  document.getElementById(`page-${page}`)?.classList.add('active');
+  if(btn)btn.classList.add('active');
+  if(page==='lb')loadLB('lands');
+  if(page==='market')loadMarket();
+  if(page==='admin')loadAdmin();
+  if(page==='map')loadStats();
+}
+function closeModal(){document.getElementById('lm').style.display='none';selLand=null;}
+function toast(msg,cls='tok'){const t=document.getElementById('toast');t.textContent=msg;t.className=`toast ${cls} show`;setTimeout(()=>t.classList.remove('show'),2500);}
+init();
+</script>
+</body>
+</html>
