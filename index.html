@@ -251,7 +251,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 </div>
 <script>
 (function(){const c=document.getElementById('mx'),x=c.getContext('2d');c.width=window.innerWidth;c.height=window.innerHeight;const cols=Math.floor(c.width/14),drops=Array(cols).fill(1);function d(){x.fillStyle='rgba(0,10,0,0.05)';x.fillRect(0,0,c.width,c.height);x.fillStyle='#00ff41';x.font='12px monospace';drops.forEach((y,i)=>{const ch=String.fromCharCode(0x30A0+Math.random()*96);x.fillText(ch,i*14,y*14);if(y*14>c.height&&Math.random()>0.975)drops[i]=0;drops[i]++;});}setInterval(d,50);})();
-const API='https://novaland-production.up.railway.app';
+const API='https://novalandbot-production.up.railway.app';
 const BOT='novaland_bot';
 const BL=[{id:'empty',icon:'🏔️',name:'خالی'},{id:'house',icon:'🏠',name:'خانه'},{id:'shop',icon:'🏪',name:'مغازه'},{id:'tower',icon:'🗼',name:'برج'},{id:'castle',icon:'🏰',name:'قلعه'},{id:'temple',icon:'⛩️',name:'معبد'},{id:'billboard',icon:'📢',name:'بیلبورد'},{id:'park',icon:'🌳',name:'پارک'},{id:'lab',icon:'🔬',name:'آزمایشگاه'},{id:'bank',icon:'🏦',name:'بانک'},{id:'art',icon:'🎨',name:'گالری'},{id:'mine',icon:'⛏️',name:'معدن'}];
 const EL=[{id:'none',icon:'➖',name:'بدون'},{id:'fire',icon:'🔥',name:'آتش'},{id:'ice',icon:'❄️',name:'یخ'},{id:'lightning',icon:'⚡',name:'رعد'},{id:'matrix',icon:'💚',name:'ماتریکس'},{id:'dark',icon:'🌑',name:'تاریک'},{id:'star',icon:'⭐',name:'ستاره'},{id:'neon',icon:'💡',name:'نئون'}];
