@@ -37,26 +37,12 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .lg{display:flex;flex-wrap:wrap;gap:8px;padding:8px 0;font-size:9px;color:var(--muted);}
 .li{display:flex;align-items:center;gap:4px;}
 .ld{width:9px;height:9px;border-radius:2px;}
-.ov{position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:200;display:flex;align-items:flex-end;backdrop-filter:blur(12px);}
-.mdl{width:100%;background:linear-gradient(180deg,#001800,var(--bg));border-top:1px solid var(--g);border-radius:24px 24px 0 0;padding:18px 16px 36px;max-height:92vh;overflow-y:auto;box-shadow:0 -10px 40px rgba(0,255,65,0.1);}
-.mh{width:34px;height:3px;background:var(--g);border-radius:2px;margin:0 auto 16px;box-shadow:0 0 8px var(--g);}
-.mts{display:flex;gap:6px;margin-bottom:14px;background:rgba(0,255,65,0.05);border-radius:10px;padding:3px;}
-.mt{flex:1;padding:8px 4px;background:transparent;border:none;border-radius:8px;color:var(--muted);font-size:10px;cursor:pointer;font-family:inherit;}
-.mt.active{background:rgba(0,255,65,0.15);color:var(--g);}
-.lhd{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
-.lic{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;border:1px solid var(--border);background:rgba(0,255,65,0.05);}
-.lco{font-size:10px;color:var(--g);letter-spacing:2px;text-shadow:0 0 8px var(--g);}
-.ltl{font-size:17px;font-weight:700;margin:2px 0;}
-.ig{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
-.ib{background:rgba(0,255,65,0.05);border:1px solid var(--border);border-radius:10px;padding:10px;}
-.il{font-size:9px;color:var(--muted);margin-bottom:3px;letter-spacing:1px;}
-.iv{font-size:13px;font-weight:700;}
-.bp{width:100%;padding:14px;background:var(--g);border:none;border-radius:14px;color:#000;font-size:15px;font-weight:700;cursor:pointer;margin-bottom:8px;font-family:inherit;box-shadow:0 0 20px rgba(0,255,65,0.4);}
-.bs{width:100%;padding:12px;background:var(--card);border:1px solid var(--border);border-radius:12px;color:var(--g);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:8px;font-family:inherit;}
-.bc{width:100%;background:none;border:none;color:var(--muted);font-size:11px;cursor:pointer;font-family:inherit;}
 .st{font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;}
 .inf{width:100%;background:rgba(0,255,65,0.05);border:1px solid var(--border);border-radius:10px;padding:11px 13px;color:var(--text);font-family:inherit;font-size:13px;outline:none;margin-bottom:8px;}
 .inf:focus{border-color:var(--g);}
+.bp{width:100%;padding:14px;background:var(--g);border:none;border-radius:14px;color:#000;font-size:15px;font-weight:700;cursor:pointer;margin-bottom:8px;font-family:inherit;box-shadow:0 0 20px rgba(0,255,65,0.4);}
+.bs{width:100%;padding:12px;background:var(--card);border:1px solid var(--border);border-radius:12px;color:var(--g);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:8px;font-family:inherit;}
+.bc{width:100%;background:none;border:none;color:var(--muted);font-size:11px;cursor:pointer;font-family:inherit;}
 .bg{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px;}
 .bb{padding:10px 4px;background:var(--card);border:1px solid var(--border);border-radius:10px;cursor:pointer;text-align:center;transition:all .2s;}
 .bb.sel{background:rgba(0,255,65,0.15);border-color:var(--g);}
@@ -90,6 +76,31 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .terr{background:rgba(255,50,50,0.15);border:1px solid #f33;color:#f55;}
 .tinf{background:rgba(0,255,65,0.1);border:1px solid var(--muted);color:var(--muted);}
 @keyframes fio{0%{opacity:0;transform:translateX(-50%) translateY(-8px)}15%{opacity:1;transform:translateX(-50%) translateY(0)}75%{opacity:1}100%{opacity:0}}
+
+/* ---- Land base page ---- */
+.lp-back{display:flex;align-items:center;gap:8px;margin-bottom:10px;background:none;border:none;color:var(--g);font-size:13px;font-family:inherit;cursor:pointer;padding:6px 0;}
+.lp-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.lp-title{font-size:16px;font-weight:700;color:var(--g);text-shadow:0 0 8px var(--g);}
+.lp-sub{font-size:10px;color:var(--muted);margin-top:2px;}
+.plot-wrap{border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:12px;box-shadow:0 0 20px rgba(0,255,65,0.05) inset;}
+.plot{position:relative;width:100%;aspect-ratio:1/1;background:#001200;overflow:hidden;touch-action:none;}
+.plot-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.85;}
+.plot-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(0,255,65,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,65,.05) 1px,transparent 1px);background-size:12.5% 12.5%;pointer-events:none;}
+.decor-item{position:absolute;font-size:28px;transform:translate(-50%,-50%);cursor:grab;user-select:none;filter:drop-shadow(0 2px 4px rgba(0,0,0,.5));}
+.decor-item.editing{outline:1px dashed rgba(0,255,65,.5);border-radius:8px;cursor:grabbing;}
+.decor-del{position:absolute;top:-8px;right:-8px;width:16px;height:16px;background:#f33;border-radius:50%;color:#fff;font-size:10px;line-height:16px;text-align:center;}
+.plot-center-icon{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:44px;opacity:.9;pointer-events:none;}
+.palette{display:flex;gap:8px;overflow-x:auto;padding:10px 2px;margin-bottom:10px;}
+.pal-item{flex-shrink:0;width:46px;height:46px;background:var(--card);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;}
+.color-row{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+.color-sw{width:32px;height:32px;border-radius:8px;border:2px solid transparent;cursor:pointer;}
+.color-sw.sel{border-color:var(--g);box-shadow:0 0 8px var(--g);}
+.offer-row{display:flex;align-items:center;justify-content:space-between;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin-bottom:8px;}
+.offer-amt{font-size:14px;font-weight:700;color:#fc0;}
+.offer-btns{display:flex;gap:6px;}
+.obtn{padding:6px 10px;border:none;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;}
+.obtn.acc{background:var(--g);color:#000;}
+.obtn.rej{background:rgba(255,50,50,.2);color:#f55;border:1px solid #f33;}
 </style>
 </head>
 <body>
@@ -112,6 +123,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
   <button class="nb" onclick="showPage('ref',this)"><span style="font-size:15px">🎯</span>دعوت</button>
   <button class="nb" id="an" style="display:none" onclick="showPage('admin',this)"><span style="font-size:15px">👑</span>ادمین</button>
 </div>
+
 <div class="page active" id="page-map">
   <div id="airbar" class="ab" style="display:none">
     <div><div style="font-size:13px;font-weight:700;color:var(--g)">🎁 ایردراپ فعاله!</div><div style="font-size:10px;color:var(--muted)" id="airrem">لود...</div></div>
@@ -139,6 +151,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
     <div class="li"><div class="ld" style="background:#003300"></div>داونتاون</div>
   </div>
 </div>
+
 <div class="page" id="page-market">
   <div class="sr" style="margin-bottom:14px">
     <div class="sc"><div class="sn" id="ms" style="color:#0c3">0</div><div class="sl">فروشی</div></div>
@@ -148,6 +161,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
   <div class="st">🟢 فروشی</div><div id="sl2"></div>
   <div class="st" style="margin-top:14px">🟡 اجاره</div><div id="rl"></div>
 </div>
+
 <div class="page" id="page-lb">
   <div class="lbt">
     <button class="lbtn active" onclick="loadLB('lands',this)">🏠 زمین</button>
@@ -156,6 +170,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
   </div>
   <div id="lbl"></div>
 </div>
+
 <div class="page" id="page-profile">
   <div class="ph">
     <div class="pa">🌌</div>
@@ -169,9 +184,14 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
       <div style="text-align:center"><div style="font-size:18px;font-weight:700;color:var(--g)" id="pr">0</div><div style="font-size:9px;color:var(--muted)">دعوتی</div></div>
     </div>
   </div>
-  <div class="st">زمین‌های من</div>
+  <div class="st">📩 پیشنهادهای دریافتی</div>
+  <div id="offRecv"><div style="text-align:center;padding:14px;color:var(--muted);font-size:11px">در حال بارگذاری...</div></div>
+  <div class="st" style="margin-top:14px">📤 پیشنهادهای من</div>
+  <div id="offSent"><div style="text-align:center;padding:14px;color:var(--muted);font-size:11px">در حال بارگذاری...</div></div>
+  <div class="st" style="margin-top:14px">زمین‌های من</div>
   <div class="lg2" id="ml"></div>
 </div>
+
 <div class="page" id="page-ref">
   <div style="background:rgba(0,255,65,0.08);border:1px solid var(--border);border-radius:20px;padding:20px;text-align:center;margin-bottom:14px;position:relative;overflow:hidden">
     <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--g),transparent)"></div>
@@ -188,6 +208,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
     <div style="display:flex;justify-content:space-between;padding:8px 0"><span style="font-size:11px;color:var(--muted)">تا زمین بعدی</span><span style="font-size:12px;font-weight:700;color:var(--g)" id="rnx">۱۰ نفر</span></div>
   </div>
 </div>
+
 <div class="page" id="page-admin">
   <div class="ac">
     <div style="font-size:14px;font-weight:700;margin-bottom:12px;color:var(--g)">👑 پنل ادمین</div>
@@ -205,49 +226,56 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
   <div class="st" style="margin-top:14px">👥 آخرین کاربران</div>
   <div id="aulist"></div>
 </div>
-</div>
-<div class="ov" id="lm" style="display:none" onclick="if(event.target.id==='lm')closeModal()">
-<div class="mdl">
-  <div class="mh"></div>
-  <div class="lhd">
-    <div class="lic"><span id="mi">🏔️</span></div>
-    <div style="flex:1">
-      <div class="lco" id="mc2">X:0 Y:0</div>
-      <div class="ltl" id="mtl">زمین آزاد</div>
-      <div style="font-size:10px;color:var(--muted)" id="mzn">حومه</div>
+
+<!-- ===== Land base page ===== -->
+<div class="page" id="page-land">
+  <button class="lp-back" onclick="backFromLand()">→ بازگشت به نقشه</button>
+  <div class="lp-head">
+    <div>
+      <div class="lp-title" id="lpTitle">زمین</div>
+      <div class="lp-sub" id="lpSub">X:0 Y:0</div>
+    </div>
+    <button class="ab2" id="lpEditBtn" style="display:none;width:auto;padding:8px 14px" onclick="toggleEdit()">✏️ ویرایش</button>
+  </div>
+  <div class="plot-wrap">
+    <div class="plot" id="plot">
+      <div class="plot-grid"></div>
+      <img class="plot-photo" id="plotPhoto" style="display:none">
+      <span class="plot-center-icon" id="plotIcon">🏔️</span>
     </div>
   </div>
-  <div class="mts">
-    <button class="mt active" onclick="mTab('info',this)">اطلاعات</button>
-    <button class="mt" onclick="mTab('manage',this)" id="mgt" style="display:none">مدیریت</button>
-    <button class="mt" onclick="mTab('act',this)">فعالیت</button>
-  </div>
-  <div id="ti">
-    <div class="ig">
-      <div class="ib"><div class="il">قیمت</div><div class="iv" id="mpr" style="color:#fc0">1 TON</div></div>
-      <div class="ib"><div class="il">وضعیت</div><div class="iv" id="mst">🟢 آزاد</div></div>
-      <div class="ib"><div class="il">منطقه</div><div class="iv" id="mz2">حومه</div></div>
-      <div class="ib"><div class="il">بازدید</div><div class="iv" id="mvi" style="color:var(--g)">0</div></div>
-      <div class="ib"><div class="il">درآمد</div><div class="iv" id="min2" style="color:#0c3">0 TON</div></div>
-      <div class="ib"><div class="il">افکت</div><div class="iv" id="mef">—</div></div>
-    </div>
-    <img id="mimg" style="display:none;width:100%;border-radius:10px;margin-bottom:12px;max-height:140px;object-fit:cover;border:1px solid var(--border)">
-    <div id="mdb" style="display:none;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px;margin-bottom:12px;font-size:12px;color:var(--muted);line-height:1.7"></div>
-    <div id="mac"></div>
-  </div>
-  <div id="tm" style="display:none">
+  <div id="editTools" style="display:none">
+    <div class="st">🎨 رنگ زمین</div>
+    <div class="color-row" id="colorRow"></div>
+    <div class="st">🌳 وسایل تزئینی (بکش رو زمین)</div>
+    <div class="palette" id="palette"></div>
+    <div class="st">ساختمان</div>
+    <div class="bg" id="bgr"></div>
+    <div class="st">افکت</div>
+    <div class="eg" id="egr"></div>
     <div class="st">نام زمین</div><input class="inf" id="mgn" placeholder="اسم زمینت...">
     <div class="st">توضیحات</div><input class="inf" id="mgd" placeholder="توضیح کوتاه...">
-    <div class="st">لینک عکس</div><input class="inf" id="mgi" placeholder="https://...">
-    <div class="st">ساختمان</div><div class="bg" id="bgr"></div>
-    <div class="st">افکت</div><div class="eg" id="egr"></div>
-    <div class="st">بازار</div>
-    <div class="ag"><button class="ab2" onclick="doSale()">🏷️ فروش</button><button class="ab2" onclick="doRent()">🔑 اجاره</button></div>
-    <button class="bp" onclick="saveLand()">💾 ذخیره</button>
+    <div class="st">لینک عکس پس‌زمینه</div><input class="inf" id="mgi" placeholder="https://...">
+    <button class="bp" onclick="saveLandPage()">💾 ذخیره تغییرات</button>
+    <div class="st" style="margin-top:10px">🏷️ بازار</div>
+    <div class="ag"><button class="ab2" onclick="doSale()">🏷️ برای فروش</button><button class="ab2" onclick="doRent()">🔑 برای اجاره</button></div>
   </div>
-  <div id="ta" style="display:none"><div id="acl"></div></div>
-  <button class="bc" onclick="closeModal()">بستن</button>
+  <div id="viewInfo">
+    <div class="ig" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0">
+      <div class="ib"><div class="il">قیمت</div><div class="iv" id="lpPrice" style="color:#fc0">- TON</div></div>
+      <div class="ib"><div class="il">وضعیت</div><div class="iv" id="lpStatus">-</div></div>
+      <div class="ib"><div class="il">منطقه</div><div class="iv" id="lpZone">-</div></div>
+      <div class="ib"><div class="il">بازدید</div><div class="iv" id="lpVisits" style="color:var(--g)">0</div></div>
+    </div>
+    <div id="lpDesc" style="display:none;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px;margin-bottom:12px;font-size:12px;color:var(--muted)"></div>
+    <div id="lpActions"></div>
+    <div id="lpOffersBox" style="display:none">
+      <div class="st" style="margin-top:14px">📩 پیشنهادهای این زمین</div>
+      <div id="lpOffers"></div>
+    </div>
+  </div>
 </div>
+
 </div>
 <script>
 (function(){const c=document.getElementById('mx'),x=c.getContext('2d');c.width=window.innerWidth;c.height=window.innerHeight;const cols=Math.floor(c.width/14),drops=Array(cols).fill(1);function d(){x.fillStyle='rgba(0,10,0,0.05)';x.fillRect(0,0,c.width,c.height);x.fillStyle='#00ff41';x.font='12px monospace';drops.forEach((y,i)=>{const ch=String.fromCharCode(0x30A0+Math.random()*96);x.fillText(ch,i*14,y*14);if(y*14>c.height&&Math.random()>0.975)drops[i]=0;drops[i]++;});}setInterval(d,50);})();
@@ -256,6 +284,8 @@ const BOT='novaland_bot';
 const BL=[{id:'empty',icon:'🏔️',name:'خالی'},{id:'house',icon:'🏠',name:'خانه'},{id:'shop',icon:'🏪',name:'مغازه'},{id:'tower',icon:'🗼',name:'برج'},{id:'castle',icon:'🏰',name:'قلعه'},{id:'temple',icon:'⛩️',name:'معبد'},{id:'billboard',icon:'📢',name:'بیلبورد'},{id:'park',icon:'🌳',name:'پارک'},{id:'lab',icon:'🔬',name:'آزمایشگاه'},{id:'bank',icon:'🏦',name:'بانک'},{id:'art',icon:'🎨',name:'گالری'},{id:'mine',icon:'⛏️',name:'معدن'}];
 const EL=[{id:'none',icon:'➖',name:'بدون'},{id:'fire',icon:'🔥',name:'آتش'},{id:'ice',icon:'❄️',name:'یخ'},{id:'lightning',icon:'⚡',name:'رعد'},{id:'matrix',icon:'💚',name:'ماتریکس'},{id:'dark',icon:'🌑',name:'تاریک'},{id:'star',icon:'⭐',name:'ستاره'},{id:'neon',icon:'💡',name:'نئون'}];
 const ZN={admin:'مرکز ادمین',center:'مرکزی ⭐',downtown:'داونتاون 💎',midtown:'میدتاون',suburb:'حومه',outskirts:'اطراف'};
+const DECOR=[{id:'tree1',icon:'🌳'},{id:'tree2',icon:'🌲'},{id:'flower',icon:'🌸'},{id:'pot',icon:'🪴'},{id:'water',icon:'💧'},{id:'fountain',icon:'⛲'},{id:'bench',icon:'🪑'},{id:'lamp',icon:'💡'},{id:'fence',icon:'🚧'},{id:'rock',icon:'🪨'},{id:'star',icon:'⭐'},{id:'heart',icon:'❤️'},{id:'flag',icon:'🚩'},{id:'gift',icon:'🎁'}];
+const BGCOLORS=['#001200','#000a00','#001a33','#1a0d00','#12001a','#001515','#1a0000','#0d1a00'];
 let tg=window.Telegram?.WebApp,user=null,mapData=[],myLands=[],selLand=null,selB='empty',selE='none';
 let canvas,ctx,hovLand=null,tick=0;
 const C=50,R=50,CE=9;
@@ -286,7 +316,7 @@ async function init(){
       if(user.airdrop_available)document.getElementById('airbar').style.display='flex';
     }
   }catch(e){}
-  await loadStats();await loadMap();await loadProfile();
+  await loadStats();await loadMap();await loadProfile();await loadMyOffers();
   loadLB('lands');loadMarket();if(user?.is_admin)loadAdmin();
   canvas.addEventListener('click',onC);
   canvas.addEventListener('mousemove',onH);
@@ -314,12 +344,24 @@ async function loadProfile(){
   document.getElementById('plc').textContent=d.land_count||0;
   renderML();}catch(e){}
 }
+async function loadMyOffers(){
+  if(!user)return;
+  try{
+    const h={};if(tg?.initData)h['X-Init-Data']=tg.initData;
+    const r=await fetch(`${API}/api/offers/mine?id=${user.id}`,{headers:h});
+    const d=await r.json();
+    const recv=d.received||[],sent=d.sent||[];
+    document.getElementById('offRecv').innerHTML=recv.length?recv.map(o=>`<div class="offer-row"><div><div style="font-size:11px;color:var(--muted)">زمین ${o.land_x},${o.land_y}</div><div class="offer-amt">${o.amount} TON</div></div><div class="offer-btns"><button class="obtn acc" onclick="respondOffer(${o.id},'accept')">قبول</button><button class="obtn rej" onclick="respondOffer(${o.id},'reject')">رد</button></div></div>`).join(''):'<div style="text-align:center;padding:14px;color:var(--muted);font-size:11px">پیشنهادی نداری</div>';
+    const stMap={pending:'⏳ در انتظار',accepted:'✅ قبول شد',rejected:'❌ رد شد'};
+    document.getElementById('offSent').innerHTML=sent.length?sent.map(o=>`<div class="offer-row"><div><div style="font-size:11px;color:var(--muted)">زمین ${o.land_x},${o.land_y}</div><div class="offer-amt">${o.amount} TON</div></div><div style="font-size:11px;color:var(--muted)">${stMap[o.status]||o.status}</div></div>`).join(''):'<div style="text-align:center;padding:14px;color:var(--muted);font-size:11px">پیشنهادی ندادی</div>';
+  }catch(e){}
+}
 function getBI(id){return BL.find(b=>b.id===id)?.icon||'🏔️';}
 function getEI(id){return EL.find(e=>e.id===id&&id!=='none')?.icon||'';}
 function renderML(){
   const g=document.getElementById('ml');
   if(!myLands.length){g.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:30px;color:var(--muted)"><div style="font-size:40px;margin-bottom:10px">🌌</div>هنوز زمینی نداری</div>';return;}
-  g.innerHTML=myLands.map(l=>`<div class="lc2" onclick="openLand(${l.x},${l.y})">
+  g.innerHTML=myLands.map(l=>`<div class="lc2" onclick="goLand(${l.x},${l.y})">
     ${l.image_url?`<img src="${l.image_url}" class="lci" onerror="this.style.display='none'">`:`<div style="font-size:28px;text-align:center;margin-bottom:6px">${getBI(l.building)}</div>`}
     <div style="font-size:9px;color:var(--g);margin-bottom:2px">${l.x},${l.y}</div>
     <div style="font-size:12px;font-weight:600;margin-bottom:3px">${l.land_name||`زمین ${l.x},${l.y}`}</div>
@@ -384,7 +426,7 @@ function draw(){
 function onC(e){
   const rect=canvas.getBoundingClientRect(),sx=canvas.width/rect.width,sy=canvas.height/rect.height;
   const x=Math.floor((e.clientX-rect.left)*sx/CE),y=Math.floor((e.clientY-rect.top)*sy/CE);
-  if(x>=0&&x<C&&y>=0&&y<R)openLand(x,y);
+  if(x>=0&&x<C&&y>=0&&y<R)goLand(x,y);
 }
 function onH(e){
   const rect=canvas.getBoundingClientRect(),sx=canvas.width/rect.width,sy=canvas.height/rect.height;
@@ -394,93 +436,191 @@ function onH(e){
     document.getElementById('hb').innerHTML=`<span style="color:var(--g);font-size:10px">📍 ${x},${y}</span><span style="font-size:10px">${getBI(l.building)} ${ZN[l.zone]||''}</span><span style="color:#fc0;font-size:10px">${l.price||'?'} TON ${l.is_for_sale?'🟢':l.is_for_rent?'🟡':''}</span>`;
   }
 }
-async function openLand(x,y){
-  const l=getL(x,y)||{x,y,price:1,zone:'suburb'};
-  selLand=l;selB=l.building||'empty';selE=l.effect||'none';
-  const im=myLands.some(m=>m.x===x&&m.y===y);
-  const ia=l.is_admin;
-  document.getElementById('mi').textContent=getBI(l.building);
-  document.getElementById('mc2').textContent=`X:${x} · Y:${y}`;
-  document.getElementById('mtl').textContent=l.land_name||(l.owner_id?(im?'زمین من':'اشغال شده'):'زمین آزاد');
-  document.getElementById('mzn').textContent=ZN[l.zone]||'';
-  document.getElementById('mpr').textContent=`${l.price} TON`;
-  document.getElementById('mst').textContent=ia?'👑 ادمین':im?'✅ مال من':l.owner_id?'❌ اشغال':'🟢 آزاد';
-  document.getElementById('mz2').textContent=ZN[l.zone]||'';
-  document.getElementById('mvi').textContent=l.visits||0;
-  document.getElementById('min2').textContent=`${(l.income||0).toFixed(3)} TON`;
-  document.getElementById('mef').textContent=getEI(l.effect)||'—';
-  const db=document.getElementById('mdb');
-  if(l.land_desc){db.style.display='block';db.textContent=l.land_desc;}else db.style.display='none';
-  const img=document.getElementById('mimg');
-  if(l.image_url){img.src=l.image_url;img.style.display='block';}else img.style.display='none';
-  const ac=document.getElementById('mac');
-  if(ia){ac.innerHTML='<div style="text-align:center;color:var(--muted);padding:10px">زمین ادمین</div>';}
-  else if(im){ac.innerHTML=`${l.is_for_sale?`<div style="background:rgba(0,204,51,.1);border:1px solid rgba(0,204,51,.3);border-radius:10px;padding:10px;text-align:center;margin-bottom:8px;font-size:12px;color:#0c3">✅ برای فروش با ${l.sale_price} TON</div>`:''}${l.is_for_rent?`<div style="background:rgba(255,204,0,.1);border:1px solid rgba(255,204,0,.3);border-radius:10px;padding:10px;text-align:center;margin-bottom:8px;font-size:12px;color:#fc0">✅ اجاره با ${l.rent_price} TON/روز</div>`:''}`;}
-  else if(!l.owner_id){ac.innerHTML=`<button class="bp" onclick="doBuy()">💚 خرید با ${l.price} TON</button>`;}
-  else{
-    let h='';
-    if(l.is_for_sale)h+=`<button class="bp" onclick="doSec()">🟢 خرید · ${l.sale_price} TON</button>`;
-    if(l.is_for_rent)h+=`<button class="bs" onclick="toast('به زودی','tinf')">🔑 اجاره · ${l.rent_price} TON/روز</button>`;
-    if(!h)h='<div style="text-align:center;color:var(--muted);padding:10px;font-size:12px">برای فروش یا اجاره نیست</div>';
-    ac.innerHTML=h;
-  }
-  document.getElementById('mgt').style.display=im?'block':'none';
-  if(im){
-    document.getElementById('mgn').value=l.land_name||'';
-    document.getElementById('mgd').value=l.land_desc||'';
-    document.getElementById('mgi').value=l.image_url||'';
-    document.getElementById('bgr').innerHTML=BL.map(b=>`<div class="bb ${selB===b.id?'sel':''}" onclick="selB='${b.id}';document.querySelectorAll('.bb').forEach(e=>e.classList.remove('sel'));this.classList.add('sel')"><div>${b.icon}</div><div>${b.name}</div></div>`).join('');
-    document.getElementById('egr').innerHTML=EL.map(ef=>`<div class="eb ${selE===ef.id?'sel':''}" onclick="selE='${ef.id}';document.querySelectorAll('.eb').forEach(e=>e.classList.remove('sel'));this.classList.add('sel')">${ef.icon}<div style="font-size:8px;color:var(--muted);margin-top:2px">${ef.name}</div></div>`).join('');
-  }
-  document.getElementById('acl').innerHTML=`${l.owner_id?`<div class="lbr"><div style="width:28px;text-align:center">💚</div><div style="flex:1"><div style="font-size:12px;font-weight:600">خریداری شد</div><div style="font-size:10px;color:var(--muted)">${l.price} TON</div></div></div>`:''}
-  <div class="lbr"><div style="width:28px;text-align:center">👁</div><div style="flex:1"><div style="font-size:12px;font-weight:600">${l.visits||0} بازدید</div><div style="font-size:10px;color:var(--muted)">هر ۱۰۰۰ = ۰.۰۱ TON</div></div></div>
-  <div class="lbr"><div style="width:28px;text-align:center">💰</div><div style="flex:1"><div style="font-size:12px;font-weight:600">درآمد</div><div style="font-size:10px;color:var(--muted)">${(l.income||0).toFixed(3)} TON</div></div></div>`;
-  if(user&&l.owner_id&&!im){const h={};if(tg?.initData)h['X-Init-Data']=tg.initData;fetch(`${API}/api/visit`,{method:'POST',headers:{'Content-Type':'application/json',...h},body:JSON.stringify({x,y,telegram_id:user.id})}).catch(()=>{});}
-  mTab('info',null);
-  document.getElementById('lm').style.display='flex';
+
+/* ================= LAND BASE PAGE ================= */
+let curLand=null, curDecor=[], editing=false, curBg='#001200', dragIdx=null;
+
+async function goLand(x,y){
+  showPage('land');
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('active'));
+  document.getElementById('lpTitle').textContent='در حال بارگذاری...';
+  try{
+    const r=await fetch(`${API}/api/land/${x}/${y}`);
+    const l=await r.json();
+    if(l.error){toast('زمین پیدا نشد','terr');backFromLand();return;}
+    curLand=l; curDecor=l.decorations||[]; curBg=l.bg_color||'#001200';
+    renderLandPage();
+    if(user && l.owner_id && l.owner_id!==String(user.id)){
+      const h={'Content-Type':'application/json'};if(tg?.initData)h['X-Init-Data']=tg.initData;
+      fetch(`${API}/api/visit`,{method:'POST',headers:h,body:JSON.stringify({x,y,telegram_id:user.id})}).catch(()=>{});
+    }
+  }catch(e){toast('خطا در اتصال','terr');}
 }
-function mTab(tab,btn){
-  ['info','manage','act'].forEach(t=>document.getElementById(`t${t[0]}`).style.display=t===tab?'block':'none');
-  document.querySelectorAll('.mt').forEach(b=>b.classList.remove('active'));
-  if(btn)btn.classList.add('active');
-  else document.querySelectorAll('.mt')[['info','manage','act'].indexOf(tab)]?.classList.add('active');
+function backFromLand(){ showPage('map'); document.querySelectorAll('.nb')[0].classList.add('active'); }
+
+function renderLandPage(){
+  const l=curLand; const isMine = user && l.owner_id===String(user.id);
+  document.getElementById('lpTitle').textContent = l.land_name || `زمین ${l.x},${l.y}`;
+  document.getElementById('lpSub').textContent = `X:${l.x} · Y:${l.y} · ${ZN[l.zone]||''}`;
+  document.getElementById('lpEditBtn').style.display = isMine ? 'block' : 'none';
+  document.getElementById('plot').style.background = curBg;
+  document.getElementById('plotIcon').textContent = getBI(l.building);
+  const ph=document.getElementById('plotPhoto');
+  if(l.image_url){ph.src=l.image_url;ph.style.display='block';}else ph.style.display='none';
+  renderDecor();
+  document.getElementById('lpPrice').textContent = `${l.price} TON`;
+  document.getElementById('lpZone').textContent = ZN[l.zone]||'';
+  document.getElementById('lpVisits').textContent = l.visits||0;
+  document.getElementById('lpStatus').textContent = l.is_admin?'👑 ادمین':isMine?'✅ مال من':l.owner_id?'❌ اشغال':'🟢 آزاد';
+  const desc=document.getElementById('lpDesc');
+  if(l.land_desc){desc.style.display='block';desc.textContent=l.land_desc;}else desc.style.display='none';
+
+  // edit tools population
+  document.getElementById('mgn').value=l.land_name||'';
+  document.getElementById('mgd').value=l.land_desc||'';
+  document.getElementById('mgi').value=l.image_url||'';
+  selB=l.building||'empty'; selE=l.effect||'none';
+  document.getElementById('bgr').innerHTML=BL.map(b=>`<div class="bb ${selB===b.id?'sel':''}" onclick="selB='${b.id}';document.querySelectorAll('#bgr .bb').forEach(e=>e.classList.remove('sel'));this.classList.add('sel')"><div>${b.icon}</div><div>${b.name}</div></div>`).join('');
+  document.getElementById('egr').innerHTML=EL.map(ef=>`<div class="eb ${selE===ef.id?'sel':''}" onclick="selE='${ef.id}';document.querySelectorAll('#egr .eb').forEach(e=>e.classList.remove('sel'));this.classList.add('sel')">${ef.icon}<div style="font-size:8px;color:var(--muted);margin-top:2px">${ef.name}</div></div>`).join('');
+  document.getElementById('colorRow').innerHTML=BGCOLORS.map(c=>`<div class="color-sw ${curBg===c?'sel':''}" style="background:${c}" onclick="setBg('${c}',this)"></div>`).join('');
+  document.getElementById('palette').innerHTML=DECOR.map(d=>`<div class="pal-item" onclick="addDecor('${d.icon}')">${d.icon}</div>`).join('');
+
+  // view actions (buy / offer / sale info)
+  const ac=document.getElementById('lpActions');
+  const offersBox=document.getElementById('lpOffersBox');
+  if(l.is_admin){ ac.innerHTML='<div style="text-align:center;color:var(--muted);padding:10px">زمین ادمینه</div>'; offersBox.style.display='none'; }
+  else if(isMine){
+    ac.innerHTML = `${l.is_for_sale?`<div style="background:rgba(0,204,51,.1);border:1px solid rgba(0,204,51,.3);border-radius:10px;padding:10px;text-align:center;margin-bottom:8px;font-size:12px;color:#0c3">✅ برای فروش با ${l.sale_price} TON</div>`:''}${l.is_for_rent?`<div style="background:rgba(255,204,0,.1);border:1px solid rgba(255,204,0,.3);border-radius:10px;padding:10px;text-align:center;margin-bottom:8px;font-size:12px;color:#fc0">✅ اجاره با ${l.rent_price} TON/روز</div>`:''}`;
+    offersBox.style.display='block';
+    loadLandOffers(l.x,l.y);
+  }
+  else if(!l.owner_id){
+    ac.innerHTML=`<button class="bp" onclick="doBuy()">💚 خرید با ${l.price} TON</button>`;
+    offersBox.style.display='none';
+  }
+  else{
+    let hh='';
+    if(l.is_for_sale)hh+=`<button class="bp" onclick="doSec()">🟢 خرید · ${l.sale_price} TON</button>`;
+    hh+=`<div class="st" style="margin-top:10px">💰 پیشنهاد قیمت به صاحب زمین</div>
+      <input class="inf" id="offAmt" type="number" step="0.01" placeholder="مثلاً 1.2">
+      <button class="bs" onclick="submitOffer()">📩 ارسال پیشنهاد</button>`;
+    ac.innerHTML=hh;
+    offersBox.style.display='none';
+  }
+  document.getElementById('editTools').style.display='none';
+  document.getElementById('viewInfo').style.display='block';
+  editing=false;
+}
+
+function renderDecor(){
+  const plot=document.getElementById('plot');
+  plot.querySelectorAll('.decor-item').forEach(e=>e.remove());
+  curDecor.forEach((d,i)=>{
+    const el=document.createElement('div');
+    el.className='decor-item'+(editing?' editing':'');
+    el.style.left=(d.px||50)+'%'; el.style.top=(d.py||50)+'%';
+    el.textContent=d.icon;
+    if(editing){
+      const del=document.createElement('div'); del.className='decor-del'; del.textContent='×';
+      del.onclick=(ev)=>{ev.stopPropagation();curDecor.splice(i,1);renderDecor();};
+      el.appendChild(del);
+      el.addEventListener('pointerdown',(ev)=>{dragIdx=i;el.setPointerCapture(ev.pointerId);});
+      el.addEventListener('pointermove',(ev)=>{
+        if(dragIdx!==i)return;
+        const rect=plot.getBoundingClientRect();
+        let px=((ev.clientX-rect.left)/rect.width)*100, py=((ev.clientY-rect.top)/rect.height)*100;
+        px=Math.max(2,Math.min(98,px)); py=Math.max(2,Math.min(98,py));
+        curDecor[i].px=px; curDecor[i].py=py;
+        el.style.left=px+'%'; el.style.top=py+'%';
+      });
+      el.addEventListener('pointerup',()=>{dragIdx=null;});
+    }
+    plot.appendChild(el);
+  });
+}
+function addDecor(icon){
+  curDecor.push({icon,px:40+Math.random()*20,py:40+Math.random()*20});
+  renderDecor();
+}
+function setBg(c,el){
+  curBg=c; document.getElementById('plot').style.background=c;
+  document.querySelectorAll('.color-sw').forEach(e=>e.classList.remove('sel'));
+  el.classList.add('sel');
+}
+function toggleEdit(){
+  editing=!editing;
+  document.getElementById('editTools').style.display=editing?'block':'none';
+  document.getElementById('viewInfo').style.display=editing?'none':'block';
+  document.getElementById('lpEditBtn').textContent=editing?'👁 مشاهده':'✏️ ویرایش';
+  renderDecor();
+}
+async function saveLandPage(){
+  if(!curLand||!user)return;
+  const h={'Content-Type':'application/json'};if(tg?.initData)h['X-Init-Data']=tg.initData;
+  await fetch(`${API}/api/land/update`,{method:'POST',headers:h,body:JSON.stringify({x:curLand.x,y:curLand.y,telegram_id:user.id,building:selB,effect:selE,land_name:document.getElementById('mgn').value,land_desc:document.getElementById('mgd').value,image_url:document.getElementById('mgi').value})});
+  await fetch(`${API}/api/land/decorations`,{method:'POST',headers:h,body:JSON.stringify({x:curLand.x,y:curLand.y,telegram_id:user.id,decorations:curDecor,bg_color:curBg})});
+  toast('✅ ذخیره شد!','tok');
+  await loadMap(); await loadProfile();
+  goLand(curLand.x,curLand.y);
 }
 async function doBuy(){
   if(!user){toast('ابتدا وارد تلگرام شو','terr');return;}
   toast('در حال خرید...','tinf');
   try{const h={'Content-Type':'application/json'};if(tg?.initData)h['X-Init-Data']=tg.initData;
-  const r=await fetch(`${API}/api/buy`,{method:'POST',headers:h,body:JSON.stringify({x:selLand.x,y:selLand.y,tx:'tg_'+Date.now(),telegram_id:user.id})});
+  const r=await fetch(`${API}/api/buy`,{method:'POST',headers:h,body:JSON.stringify({x:curLand.x,y:curLand.y,tx:'tg_'+Date.now(),telegram_id:user.id})});
   const d=await r.json();
-  if(d.success){toast('✅ زمین خریداری شد!','tok');closeModal();await loadMap();await loadProfile();await loadStats();}
+  if(d.success){toast('✅ زمین خریداری شد!','tok');await loadMap();await loadProfile();goLand(curLand.x,curLand.y);}
   else toast(d.error||'خطا','terr');}catch(e){toast('خطا در اتصال','terr');}
 }
 async function doSec(){
   if(!user){toast('ابتدا وارد شو','terr');return;}
   toast('در حال خرید...','tinf');
   try{const h={'Content-Type':'application/json'};if(tg?.initData)h['X-Init-Data']=tg.initData;
-  const r=await fetch(`${API}/api/secondary_buy`,{method:'POST',headers:h,body:JSON.stringify({x:selLand.x,y:selLand.y,tx:'tg_'+Date.now(),telegram_id:user.id})});
+  const r=await fetch(`${API}/api/secondary_buy`,{method:'POST',headers:h,body:JSON.stringify({x:curLand.x,y:curLand.y,tx:'tg_'+Date.now(),telegram_id:user.id})});
   const d=await r.json();
-  if(d.success){toast('✅ خرید انجام شد!','tok');closeModal();await loadMap();await loadProfile();}
+  if(d.success){toast('✅ خرید انجام شد!','tok');await loadMap();await loadProfile();goLand(curLand.x,curLand.y);}
   else toast(d.error||'خطا','terr');}catch(e){toast('خطا','terr');}
 }
 async function doSale(){
   const p=prompt('قیمت فروش (TON):','1.5');if(!p)return;
   const h={'Content-Type':'application/json'};if(tg?.initData)h['X-Init-Data']=tg.initData;
-  await fetch(`${API}/api/sell`,{method:'POST',headers:h,body:JSON.stringify({x:selLand.x,y:selLand.y,price:parseFloat(p),telegram_id:user.id})});
-  toast('✅ برای فروش گذاشتی!','tok');await loadMap();await loadProfile();closeModal();
+  await fetch(`${API}/api/sell`,{method:'POST',headers:h,body:JSON.stringify({x:curLand.x,y:curLand.y,price:parseFloat(p),telegram_id:user.id})});
+  toast('✅ برای فروش گذاشتی!','tok');await loadMap();await loadProfile();goLand(curLand.x,curLand.y);
 }
 async function doRent(){
   const p=prompt('قیمت اجاره (TON/روز):','0.1');if(!p)return;
   const h={'Content-Type':'application/json'};if(tg?.initData)h['X-Init-Data']=tg.initData;
-  await fetch(`${API}/api/rent`,{method:'POST',headers:h,body:JSON.stringify({x:selLand.x,y:selLand.y,price:parseFloat(p),telegram_id:user.id})});
-  toast('✅ برای اجاره گذاشتی!','tok');await loadMap();await loadProfile();closeModal();
+  await fetch(`${API}/api/rent`,{method:'POST',headers:h,body:JSON.stringify({x:curLand.x,y:curLand.y,price:parseFloat(p),telegram_id:user.id})});
+  toast('✅ برای اجاره گذاشتی!','tok');await loadMap();await loadProfile();goLand(curLand.x,curLand.y);
 }
-async function saveLand(){
-  if(!selLand||!user)return;
+async function submitOffer(){
+  if(!user){toast('ابتدا وارد شو','terr');return;}
+  const amt=parseFloat(document.getElementById('offAmt').value);
+  if(!amt||amt<=0){toast('مقدار درست وارد کن','terr');return;}
   const h={'Content-Type':'application/json'};if(tg?.initData)h['X-Init-Data']=tg.initData;
-  await fetch(`${API}/api/land/update`,{method:'POST',headers:h,body:JSON.stringify({x:selLand.x,y:selLand.y,telegram_id:user.id,building:selB,effect:selE,land_name:document.getElementById('mgn').value,land_desc:document.getElementById('mgd').value,image_url:document.getElementById('mgi').value})});
-  toast('✅ ذخیره شد!','tok');await loadMap();await loadProfile();closeModal();
+  const r=await fetch(`${API}/api/offer`,{method:'POST',headers:h,body:JSON.stringify({x:curLand.x,y:curLand.y,amount:amt,telegram_id:user.id})});
+  const d=await r.json();
+  if(d.success){toast('📩 پیشنهادت ارسال شد!','tok');}else toast(d.error||'خطا','terr');
 }
+async function loadLandOffers(x,y){
+  try{
+    const h={};if(tg?.initData)h['X-Init-Data']=tg.initData;
+    const r=await fetch(`${API}/api/land/${x}/${y}/offers?id=${user.id}`,{headers:h});
+    const d=await r.json();
+    const offs=d.offers||[];
+    document.getElementById('lpOffers').innerHTML = offs.length ? offs.map(o=>`<div class="offer-row"><div><div style="font-size:11px;color:var(--muted)">${o.first_name||o.username||'کاربر'}</div><div class="offer-amt">${o.amount} TON</div></div><div class="offer-btns"><button class="obtn acc" onclick="respondOffer(${o.id},'accept')">قبول</button><button class="obtn rej" onclick="respondOffer(${o.id},'reject')">رد</button></div></div>`).join('') : '<div style="text-align:center;padding:14px;color:var(--muted);font-size:11px">پیشنهادی نیومده</div>';
+  }catch(e){}
+}
+async function respondOffer(id,action){
+  const h={'Content-Type':'application/json'};if(tg?.initData)h['X-Init-Data']=tg.initData;
+  const r=await fetch(`${API}/api/offer/respond`,{method:'POST',headers:h,body:JSON.stringify({offer_id:id,action,telegram_id:user.id})});
+  const d=await r.json();
+  toast(d.message||(d.success?'انجام شد':'خطا'), d.success?'tok':'terr');
+  await loadMap(); await loadProfile(); await loadMyOffers();
+  if(curLand) loadLandOffers(curLand.x,curLand.y);
+}
+/* ================= END LAND BASE PAGE ================= */
+
 async function doAir(){
   if(!user){toast('ابتدا وارد شو','terr');return;}
   const h={'Content-Type':'application/json'};if(tg?.initData)h['X-Init-Data']=tg.initData;
@@ -501,8 +641,8 @@ async function loadMarket(){
   const fs=d.for_sale||[],fr=d.for_rent||[];
   document.getElementById('ms').textContent=fs.length;
   document.getElementById('mr').textContent=fr.length;
-  document.getElementById('sl2').innerHTML=fs.slice(0,5).map(l=>`<div class="mkc" onclick="openLand(${l.x},${l.y})"><div class="mki">${getBI(l.building)}</div><div style="flex:1"><div style="font-size:13px;font-weight:700">${l.land_name||`زمین ${l.x},${l.y}`}</div><div style="font-size:10px;color:var(--muted);margin-top:2px">${ZN[l.zone]||''}</div></div><div style="text-align:right"><div style="font-size:15px;font-weight:700;color:#0c3">${l.sale_price}</div><div style="font-size:9px;color:var(--muted)">TON</div></div></div>`).join('')||'<div style="text-align:center;padding:16px;color:var(--muted)">زمین فروشی نیست</div>';
-  document.getElementById('rl').innerHTML=fr.slice(0,5).map(l=>`<div class="mkc" onclick="openLand(${l.x},${l.y})"><div class="mki">${getBI(l.building)}</div><div style="flex:1"><div style="font-size:13px;font-weight:700">${l.land_name||`زمین ${l.x},${l.y}`}</div></div><div style="text-align:right"><div style="font-size:13px;font-weight:700;color:#fc0">${l.rent_price}/روز</div><div style="font-size:9px;color:var(--muted)">TON</div></div></div>`).join('')||'<div style="text-align:center;padding:16px;color:var(--muted)">زمین اجاره‌ای نیست</div>';}catch(e){}
+  document.getElementById('sl2').innerHTML=fs.slice(0,5).map(l=>`<div class="mkc" onclick="goLand(${l.x},${l.y})"><div class="mki">${getBI(l.building)}</div><div style="flex:1"><div style="font-size:13px;font-weight:700">${l.land_name||`زمین ${l.x},${l.y}`}</div><div style="font-size:10px;color:var(--muted);margin-top:2px">${ZN[l.zone]||''}</div></div><div style="text-align:right"><div style="font-size:15px;font-weight:700;color:#0c3">${l.sale_price}</div><div style="font-size:9px;color:var(--muted)">TON</div></div></div>`).join('')||'<div style="text-align:center;padding:16px;color:var(--muted)">زمین فروشی نیست</div>';
+  document.getElementById('rl').innerHTML=fr.slice(0,5).map(l=>`<div class="mkc" onclick="goLand(${l.x},${l.y})"><div class="mki">${getBI(l.building)}</div><div style="flex:1"><div style="font-size:13px;font-weight:700">${l.land_name||`زمین ${l.x},${l.y}`}</div></div><div style="text-align:right"><div style="font-size:13px;font-weight:700;color:#fc0">${l.rent_price}/روز</div><div style="font-size:9px;color:var(--muted)">TON</div></div></div>`).join('')||'<div style="text-align:center;padding:16px;color:var(--muted)">زمین اجاره‌ای نیست</div>';}catch(e){}
 }
 async function loadAdmin(){
   try{const h={};if(tg?.initData)h['X-Init-Data']=tg.initData;
@@ -537,8 +677,8 @@ function showPage(page,btn){
   if(page==='market')loadMarket();
   if(page==='admin')loadAdmin();
   if(page==='map')loadStats();
+  if(page==='profile')loadMyOffers();
 }
-function closeModal(){document.getElementById('lm').style.display='none';selLand=null;}
 function toast(msg,cls='tok'){const t=document.getElementById('toast');t.textContent=msg;t.className=`toast ${cls} show`;setTimeout(()=>t.classList.remove('show'),2500);}
 init();
 </script>
