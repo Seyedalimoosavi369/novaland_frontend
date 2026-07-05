@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 160" width="200" height="160">
+<defs>
+<linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#5cb85c"/><stop offset="100%" style="stop-color:#3d8b3d"/></linearGradient>
+<linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#3a7a3a"/><stop offset="100%" style="stop-color:#2d6b2d"/></linearGradient>
+<linearGradient id="g3" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#4a9a4a"/><stop offset="100%" style="stop-color:#3a8a3a"/></linearGradient>
+</defs>
+<polygon points="100,20 180,60 100,100 20,60" fill="url(#g1)" stroke="#4a8a4a" stroke-width="1"/>
+<polygon points="20,60 100,100 100,120 20,80" fill="url(#g2)" stroke="#2d6b2d" stroke-width="1"/>
+<polygon points="180,60 100,100 100,120 180,80" fill="url(#g3)" stroke="#3a8a3a" stroke-width="1"/>
+<ellipse cx="71" cy="52" rx="12" ry="5" fill="rgba(0,0,0,0.15)"/>
+<rect x="68" y="38" width="6" height="16" fill="#8B4513" rx="2"/>
+<ellipse cx="71" cy="36" rx="14" ry="12" fill="#228B22"/>
+<ellipse cx="71" cy="30" rx="10" ry="9" fill="#2d9e2d"/>
+<ellipse cx="71" cy="25" rx="7" ry="7" fill="#3aaa3a"/>
+<ellipse cx="117" cy="62" rx="10" ry="4" fill="rgba(0,0,0,0.15)"/>
+<rect x="115" y="50" width="5" height="14" fill="#8B4513" rx="2"/>
+<ellipse cx="117" cy="48" rx="12" ry="10" fill="#228B22"/>
+<ellipse cx="117" cy="43" rx="9" ry="8" fill="#2d9e2d"/>
+<ellipse cx="117" cy="38" rx="6" ry="6" fill="#3aaa3a"/>
+<ellipse cx="90" cy="70" rx="7" ry="3" fill="rgba(0,0,0,0.15)"/>
+<rect x="88" y="62" width="4" height="10" fill="#8B4513" rx="1"/>
+<ellipse cx="90" cy="61" rx="9" ry="8" fill="#228B22"/>
+<ellipse cx="90" cy="56" rx="7" ry="6" fill="#3aaa3a"/>
+</svg>
